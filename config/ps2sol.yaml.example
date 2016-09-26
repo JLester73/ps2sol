@@ -1,0 +1,4 @@
+config:
+  db_login: psnavigator
+  db_password: mypassword
+  db_instance: PSPRODDB

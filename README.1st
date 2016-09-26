@@ -1,0 +1,34 @@
+Needed utilities:
+ruby 1.8
+rake
+
+Ruby Libraries
+--------------
+oci8
+fastercsv
+
+ps2sol will build export files based on one of two types of extraction:
+1. Course based - Using the --type course option, the --in option specifies 
+	a file with one group per line per test.
+
+	Format of CSV input file:
+	1. PowerSchool SectionID
+	2. PEMSolutions Test Code
+	3. Online Test Flag (Y/N)
+	
+3. Student based - Using the --type single option, the --in option specifies 
+	a file with one student per line per test.
+
+	Format of CSV input file:
+	1. Student ID
+	2. Group for PEMSolultions
+	3. PEMSolutions Test Code
+	4. Online Test Flag (Y/N)
+
+The test administration flag --admin should appear as it would in the data
+file specifications as specified by PEMSolutions.
+
+- Using the rake command to build course exports quickly.
+Rakefile 
+rake --tasks shows the tasks available
+
