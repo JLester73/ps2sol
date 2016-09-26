@@ -86,6 +86,7 @@ section_restrict_clause = course_section_restrict_clause +
    AND cc.course_number = :course_num"
 
 student_tables_restrict_clause = " FROM students st
+  INNER JOIN s_va_stu_x on s_va_stu_x.studentsdcid = st.dcid
   WHERE enroll_status = 0 AND state_studentnumber = :sti"
 
 course_section_order_clause = " ORDER BY cc.course_number, cc.section_number, 
