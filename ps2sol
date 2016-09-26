@@ -15,15 +15,15 @@ require_relative 'lib/state_v_student.rb'
 
 # Option parsing
 opts = GetoptLong.new(
-		["--in", "-i", GetoptLong::REQUIRED_ARGUMENT],
-		["--school", "-s", GetoptLong::REQUIRED_ARGUMENT],
-		["--type", "-t", GetoptLong::REQUIRED_ARGUMENT],
-		["--admin", "-a", GetoptLong::REQUIRED_ARGUMENT]
-		)
+ ["--in", "-i", GetoptLong::REQUIRED_ARGUMENT],
+ ["--school", "-s", GetoptLong::REQUIRED_ARGUMENT],
+ ["--type", "-t", GetoptLong::REQUIRED_ARGUMENT],
+ ["--admin", "-a", GetoptLong::REQUIRED_ARGUMENT]
+)
 
 def print_usage(error)
-	print "#{__FILE__}: --school <school number> --in input_file --type section,course,single --admin administration\n"
-	exit
+ print "#{__FILE__}: --school <school number> --in input_file --type section,course,single --admin administration\n"
+ exit
 end
 
 # Base Query
@@ -78,11 +78,11 @@ base_restrict_clause = " WHERE terms.yearid = :year_id
 
 course_section_restrict_clause = " AND terms.schoolid = :school_id"
 course_restrict_clause = course_section_restrict_clause + 
-  " AND ps_customfields.getCoursescf(courses.id, 'alt_course_number') = 
+" AND ps_customfields.getCoursescf(courses.id, 'alt_course_number') = 
   :alt_course_number"
 
 section_restrict_clause = course_section_restrict_clause + 
-  " AND cc.section_number = :section_num 
+" AND cc.section_number = :section_num 
    AND cc.course_number = :course_num"
 
 student_tables_restrict_clause = " FROM students st
@@ -99,56 +99,55 @@ student_order_clause = " ORDER BY st.last_name, st.first_name"
 #
 # These must be 9 characters or less!
 def gen_short_course(state_course_code)
-  short_courses = { '1109' => 'Eng 6', '3110' => 'Math 6', 
-    '2354' => 'US-His 6', '2357' => 'Civ Econ', '1110' => 'Eng 7',
-    '3111' => 'Math 7', '3112' => 'Math 8', '4125' => 'Sci 8',
-    '1120' => 'Eng 8', '3130' => 'Alg I', '3132' => 'Alg I-P2',
-    '3135' => 'Alg II', '4310' => 'Biology I', '4410' => 'Chem I',
-    '4210' => 'E Sci', '1140' => 'Eng 10', '1150' => 'Eng 11',
-    '1196' => 'Eng 11-H', '3143' => 'Geom I', '3145' => 'Geom P2',
-    '2360' => 'VA/US Hi', '2319' => 'AP US-Hi', '2210' => 'W Geog',
-    '2215' => 'W-His I', '2216' => 'W-His II', '3001' => 'L-Arts 3',
-    '3002' => 'Math 3', '3003' => 'Sci 3', '3004' => 'SocStu 3',
-    '4001' => 'L-Arts 4', '4002' => 'Math 4', '4003' => 'Sci 4',
-    '4004' => 'SocStu 4', '5001' => 'L-Arts 5', '5002' => 'Math 5',
-    '5003' => 'Sci 5', '5004' => 'SocStu 5'
-  }
-  short_courses[state_course_code]
+ short_courses = { '1109' => 'Eng 6', '3110' => 'Math 6', 
+  '2354' => 'US-His 6', '2357' => 'Civ Econ', '1110' => 'Eng 7',
+  '3111' => 'Math 7', '3112' => 'Math 8', '4125' => 'Sci 8',
+  '1120' => 'Eng 8', '3130' => 'Alg I', '3132' => 'Alg I-P2',
+  '3135' => 'Alg II', '4310' => 'Biology I', '4410' => 'Chem I',
+  '4210' => 'E Sci', '1140' => 'Eng 10', '1150' => 'Eng 11',
+  '1196' => 'Eng 11-H', '3143' => 'Geom I', '3145' => 'Geom P2',
+  '2360' => 'VA/US Hi', '2319' => 'AP US-Hi', '2210' => 'W Geog',
+  '2215' => 'W-His I', '2216' => 'W-His II', '3001' => 'L-Arts 3',
+  '3002' => 'Math 3', '3003' => 'Sci 3', '3004' => 'SocStu 3',
+  '4001' => 'L-Arts 4', '4002' => 'Math 4', '4003' => 'Sci 4',
+  '4004' => 'SocStu 4', '5001' => 'L-Arts 5', '5002' => 'Math 5',
+  '5003' => 'Sci 5', '5004' => 'SocStu 5'
+ }
+ short_courses[state_course_code]
 end
 
 def gen_year_id(admin_info)
-  season = admin_info[2]
-  year = "20" + admin_info[3]
-  if (season == 'sprg' || season == 'ardt')
-    year_id = year.to_i - 1 - 1990
-  else
-    year_id = year.to_i - 1990
-  end
-  return year_id 
+ season = admin_info[2]
+ year = "20" + admin_info[3]
+ if (season == 'sprg' || season == 'ardt')
+  year_id = year.to_i - 1 - 1990
+ else
+  year_id = year.to_i - 1990
+ end
+ return year_id 
 end
 
 def read_config(db_login, db_password, db_instance)
-  begin
-    config = YAML.load_file("config/ps2sol.yaml")
-	@db_login = config["config"]["db_login"]
-	@db_password = config["config"]["db_password"]
-	@db_instance = config["config"]["db_instance"]
-  end
+ begin
+  config = YAML.load_file("config/ps2sol.yaml")
+  @db_login = config["config"]["db_login"]
+  @db_password = config["config"]["db_password"]
+  @db_instance = config["config"]["db_instance"]
+ end
 end
 
 def gen_term_restriction(admin_info, year_id)
-  season = admin_info[2]
-  
+ season = admin_info[2]
   year_abbrev = (year_id + 1990).to_s.slice(2, 3) + '-' +
-      (year_id + 1 + 1990).to_s.slice(2, 3)
+ (year_id + 1 + 1990).to_s.slice(2, 3)
 
-  if (season == 'fall')
-    terms = " AND (terms.abbreviation = 'S1') "
-  else
-    terms = " AND (terms.abbreviation = 'S2' or " +
-        "terms.abbreviation = '#{year_abbrev}') "
-  end
-  return terms
+ if (season == 'fall')
+  terms = " AND (terms.abbreviation = 'S1') "
+ else
+  terms = " AND (terms.abbreviation = 'S2' or " +
+  "terms.abbreviation = '#{year_abbrev}') "
+ end
+ return terms
 end
 
 have_type_f = false
@@ -161,345 +160,345 @@ input_file = ''
 school = ''
 year = ''
 begin
-	opts.each do |opt, arg|
-		case opt
-			when '--in'
-        input_file = arg
-        have_input_f = true
-			when '--school'
-        school = arg
-        have_school_f = true
-			when '--type'
-				case arg
-					when 'course'
-						type = arg
-						have_type_f = true
-					when 'section'
-						type = arg
-						have_type_f = true
-					when 'single'
-						type = arg
-						have_type_f = true
-				end
-			when '--admin'
-				admin = arg
-				have_admin_f = true
-		end
-	end
+ opts.each do |opt, arg|
+  case opt
+  when '--in'
+   input_file = arg
+   have_input_f = true
+  when '--school'
+   school = arg
+   have_school_f = true
+  when '--type'
+   case arg
+   when 'course'
+    type = arg
+    have_type_f = true
+   when 'section'
+    type = arg
+    have_type_f = true
+   when 'single'
+    type = arg
+    have_type_f = true
+   end
+  when '--admin'
+   admin = arg
+   have_admin_f = true
+  end
+ end
 
-	# No options give, but we require at least one option --in
-	if (!have_input_f || !have_type_f || !have_admin_f || !have_school_f) 
-		print_usage(1)
-	end
+ # No options give, but we require at least one option --in
+ if (!have_input_f || !have_type_f || !have_admin_f || !have_school_f) 
+  print_usage(1)
+ end
 rescue
-	print_usage(1)
+ print_usage(1)
 end
 
 
 begin
-    # Read in config file
-    read_config(@db_login, @db_password, @db_instance)
-	printf "Processing: %i\n", school
-	CSV.foreach(input_file, :headers => :first_row) do |row|
-    admin = admin.slice(0, 8) if admin.length > 8
-    admin_info = admin.match(/^(wr|nw|ft|va|v)(fall|sprg|sprng|ardt|summ)([0-9]{2})$/)
-    log  = Logger.new('Student')
-    log.outputters = FileOutputter.new('Student',
-      :filename => "#{school}-students.log", :trunc => false)
-    log.level = WARN
+ # Read in config file
+ read_config(@db_login, @db_password, @db_instance)
+ printf "Processing: %i\n", school
+ CSV.foreach(input_file, :headers => :first_row) do |row|
+  admin = admin.slice(0, 8) if admin.length > 8
+  admin_info = admin.match(/^(wr|nw|ft|va|v)(fall|sprg|sprng|ardt|summ)([0-9]{2})$/)
+  log  = Logger.new('Student')
+  log.outputters = FileOutputter.new('Student',
+  :filename => "#{school}-students.log", :trunc => false)
+  log.level = WARN
 
-		begin
-			dbh = OCI8.new(@db_login, @db_password, @db_instance)
-			case type
-				when 'single'
-  			  puts "Processing: students from #{school}:"
-          if admin_info[1] == 'v'
-            sti = row[0].to_i
-            group = row[1]
-            group_code = row[2]
-            test = row[3]
-            recovery = row[4]
-            retest = row[5]
-            d_code = row[6]
-            term_grad = row[7]
-            proj_grad = row[8]
-            vgla = row[9]
-            vaap = row[10]
-            vsep = row[11]
-          else
-            sti = row[0].to_i
-            group = row[1]
-            group_code = row[2]
-            test = row[3]
-            online = row[4]
-            recovery = row[5]
-            retest = row[6]
-            d_code = row[7]
-            term_grad = row[8]
-            proj_grad = row[9]
-            retest_college = row[10]
-          end
+  begin
+   dbh = OCI8.new(@db_login, @db_password, @db_instance)
+   case type
+   when 'single'
+    puts "Processing: students from #{school}:"
+    if admin_info[1] == 'v'
+     sti = row[0].to_i
+     group = row[1]
+     group_code = row[2]
+     test = row[3]
+     recovery = row[4]
+     retest = row[5]
+     d_code = row[6]
+     term_grad = row[7]
+     proj_grad = row[8]
+     vgla = row[9]
+     vaap = row[10]
+     vsep = row[11]
+    else
+     sti = row[0].to_i
+     group = row[1]
+     group_code = row[2]
+     test = row[3]
+     online = row[4]
+     recovery = row[5]
+     retest = row[6]
+     d_code = row[7]
+     term_grad = row[8]
+     proj_grad = row[9]
+     retest_college = row[10]
+    end
 
-          # Build the query
-          query = base_fields_clause + student_tables_restrict_clause
+    # Build the query
+    query = base_fields_clause + student_tables_restrict_clause
 
-          sth = dbh.parse(query)
-          sth.bind_param(':sti', sti)
-          sth.exec()
-				when 'section'
-          group_code = row[0]
-          section_info = row[0].split(/\./)
-          test = row[1]
-          online = row[2]
+    sth = dbh.parse(query)
+    sth.bind_param(':sti', sti)
+    sth.exec()
+   when 'section'
+    group_code = row[0]
+    section_info = row[0].split(/\./)
+    test = row[1]
+    online = row[2]
 
-          # Get year id and term restrictions for query
-          year_id = gen_year_id(admin_info)
-          term_restrict_clause = gen_term_restriction(admin_info, year_id)
+    # Get year id and term restrictions for query
+    year_id = gen_year_id(admin_info)
+    term_restrict_clause = gen_term_restriction(admin_info, year_id)
 
-          # Build the query
-          query = base_fields_clause + course_fields_clause + 
-            course_tables_clause + base_restrict_clause + 
-            section_restrict_clause + term_restrict_clause + 
-            course_section_order_clause
+    # Build the query
+    query = base_fields_clause + course_fields_clause + 
+    course_tables_clause + base_restrict_clause + 
+    section_restrict_clause + term_restrict_clause + 
+    course_section_order_clause
 
-          sth = dbh.parse(query)
-          sth.bind_param(':year_id', year_id)
-          sth.bind_param(':school_id', school)
-          sth.bind_param(':section_num', section_info[1])
-          sth.bind_param(':course_num', section_info[0])
-          sth.exec()
-				when 'course'
-          course = row[0]
-          test = row[1]
-          online = row[2]
-			    puts "Processing: course: #{course} for test: #{test} " +
-               "from school: #{school}:"
+    sth = dbh.parse(query)
+    sth.bind_param(':year_id', year_id)
+    sth.bind_param(':school_id', school)
+    sth.bind_param(':section_num', section_info[1])
+    sth.bind_param(':course_num', section_info[0])
+    sth.exec()
+   when 'course'
+    course = row[0]
+    test = row[1]
+    online = row[2]
+    puts "Processing: course: #{course} for test: #{test} " +
+    "from school: #{school}:"
 
-          # Get year id and term restrictions for query
-          year_id = gen_year_id(admin_info)
-          term_restrict_clause = gen_term_restriction(admin_info, year_id)
+    # Get year id and term restrictions for query
+    year_id = gen_year_id(admin_info)
+    term_restrict_clause = gen_term_restriction(admin_info, year_id)
 
-          # Build the query
-          query = base_fields_clause + 
-            course_fields_clause + course_tables_clause + 
-            base_restrict_clause + course_restrict_clause + 
-            term_restrict_clause + course_section_order_clause
+    # Build the query
+    query = base_fields_clause + 
+    course_fields_clause + course_tables_clause + 
+    base_restrict_clause + course_restrict_clause + 
+    term_restrict_clause + course_section_order_clause
 
-          sth = dbh.parse(query)
-          sth.bind_param(':year_id', year_id)
-          sth.bind_param(':school_id', school)
-          sth.bind_param(':alt_course_number', course.to_s)
-          sth.exec()
-			end
-		    # puts sth.row_count.to_s
-			# JL Changes to add error reporting for missing STI's
-			output_array = Array.new
-            sth.fetch_hash do |fetch_row|
-                output_array << fetch_row
-            end
-			puts "Student Count: " + sth.row_count.to_s
-			log.error "STI #{sti} Not Found!" if output_array.empty?
-            output_array.each_index do |index|
-			# Old Loop
-			# while row = sth.fetch_hashOld Loop
-				row = output_array[index]
-				if ((type == 'section' || type == 'course') && 
-            !row['COURSE_NAME'].nil? &&	
-            !row['TCH_LAST_NAME'].nil?)
-					group = "#{gen_short_course(row['ALT_COURSE_NUMBER'])} " +
-          "#{row['TCH_LAST_NAME'].slice(0, 6).strip} " +
-          "#{row['EXPRESSION'].gsub(/[()]/, '').strip.slice(0,4)}"
-				end
-        if (type == 'course')
-          group_code = row['COURSE_NUMBER'] + '.' + row['SECTION_NUMBER']
-        end
-        if (admin_info[1] == 'ft') then
-  				student = StateFTStudent.new do
-            self.admin = admin
-            self.last_name = row['LAST_NAME']
-            self.first_name = row['FIRST_NAME']
-            self.middle_name = row['MIDDLE_NAME']
-            self.sti = row['STATE_STUDENTNUMBER']
-            self.division = "094"
-            self.va_schoolid = row['SCHOOLID']
-            self.test_code = test
-            self.group_name = group
-            self.group_code = group_code
-            self.birth_date = row['DOB']
-            self.grade = row['GRADE_LEVEL']
-            self.gender = row['GENDER']
-            self.ethnicity = row['FEDETHNICITY']
-            self.race = row['VA_ERCODE']
-            self.student_number = row['STUDENT_NUMBER']
-            self.t1_tas = row['VA_TTITLE1_CODE']
-            self.primnight_rescode = row['VA_PRIMNIGHT_RESCODE']
-            self.neg_del = row['VA_NEGDELINQUENT_CODE']
-            self.n_code = row['VA_DISADVANTAGED']
-            self.ell_test_tier = row['VA_ELL_TEST_TIER']
-            self.ell_comp_score = row['VA_ELL_COMPOSITE_SCORE']
-            self.ell_lit_score = row['VA_ELL_LITERACY_SCORE']
-            self.dis_code = row['VA_PRIMARY_DIS_CODE']
-            self.soa_lep = row['SOL_SOA_LEP']
-            self.soa_trans = row['SOL_SOA_TRANSFER']
-            self.ayp_a = row['SOL_AYP_A']
-            self.ayp_b = row['SOL_AYP_B']
-            self.ayp_c = row['SOL_AYP_C']
-            self.ayp_d = row['SOL_AYP_D']
-            self.rp_code = row['SOL_RP_CODE']
-            self.d_code = row['SOL_D_CODE']
-            self.term_grad = row['SOL_TERM_GRAD']
-            self.formerly_lep = row['VA_LEP_SERV_CD']
-            self.online = online
-            self.retest = retest
-            self.recovery = recovery
-            self.proj_grad = proj_grad
-            self.enroll_date = row['ENTRYDATE']
-            self.enroll_code = row['ENTRYCODE']
-            self.withdrawal_date = row['EXITDATE']
-            self.withdrawal_code = row['EXITCODE']
-            self.vtln = row['SIF_STATEPRID']
-          end
-        elsif (admin_info[1] == 'v') then
-          student = StateVStudent.new do
-            self.admin = admin
-            self.last_name = row['LAST_NAME']
-            self.first_name = row['FIRST_NAME']
-            self.middle_name = row['MIDDLE_NAME']
-            self.sti = row['STATE_STUDENTNUMBER']
-            self.division = "094"
-            self.va_schoolid = row['SCHOOLID']
-            self.test_code = test
-            self.group_name = group
-            self.group_code = group_code
-            self.birth_date = row['DOB']
-            self.grade = row['GRADE_LEVEL']
-            self.gender = row['GENDER']
-            self.ethnicity = row['FEDETHNICITY']
-            self.race = row['VA_ERCODE']
-            self.student_number = row['STUDENT_NUMBER']
-            self.t1_tas = row['VA_TTITLE1_CODE']
-            self.primnight_rescode = row['VA_PRIMNIGHT_RESCODE']
-            self.neg_del = row['VA_NEGDELINQUENT_CODE']
-            self.n_code = row['VA_DISADVANTAGED']
-            self.ell_test_tier = row['VA_ELL_TEST_TIER']
-            self.ell_comp_score = row['VA_ELL_COMPOSITE_SCORE']
-            self.ell_lit_score = row['VA_ELL_LITERACY_SCORE']
-            self.dis_code = row['VA_PRIMARY_DIS_CODE']
-            self.soa_lep = row['SOL_SOA_LEP']
-            self.soa_trans = row['SOL_SOA_TRANSFER']
-            self.ayp_a = row['SOL_AYP_A']
-            self.ayp_b = row['SOL_AYP_B']
-            self.ayp_c = row['SOL_AYP_C']
-            self.ayp_d = row['SOL_AYP_D']
-            self.rp_code = row['SOL_RP_CODE']
-            self.d_code = row['SOL_D_CODE']
-            self.term_grad = row['SOL_TERM_GRAD']
-            self.formerly_lep = row['VA_LEP_SERV_CD']
-            self.recovery = recovery
-            self.retest = retest
-            self.d_code = d_code
-            self.term_grad = term_grad
-            self.proj_grad = proj_grad
-            self.vaap = vaap
-            self.vgla = vgla
-            self.vsep = vsep
-            self.enroll_date = row['ENTRYDATE']
-            self.enroll_code = row['ENTRYCODE']
-            self.withdrawal_date = row['EXITDATE']
-            self.withdrawal_code = row['EXITCODE']
-            self.vtln = row['SIF_STATEPRID']
-          end
-        elsif (admin_info[1] == 'va') then
-          student = StateARDTStudent.new do
-            self.admin = admin
-            self.last_name = row['LAST_NAME']
-            self.first_name = row['FIRST_NAME']
-            self.middle_name = row['MIDDLE_NAME']
-            self.sti = row['STATE_STUDENTNUMBER']
-            self.division = "094"
-            self.va_schoolid = row['SCHOOLID']
-            self.test_code = test
-            self.group_name = group
-            self.group_code = group_code
-            self.birth_date = row['DOB']
-            self.grade = row['GRADE_LEVEL']
-            self.gender = row['GENDER']
-            self.ethnicity = row['FEDETHNICITY']
-            self.race = row['VA_ERCODE']
-            self.dis_code = row['VA_PRIMARY_DIS_CODE']
-            self.lep_code = row['VA_LEP_SERV_CD']
-            self.enroll_date = row['ENTRYDATE']
-            self.enroll_code = row['ENTRYCODE']
-            self.withdrawal_date = row['EXITDATE']
-            self.withdrawal_code = row['EXITCODE']
-            self.vtln = row['SIF_STATEPRID']
-          end
-        else
-          student = StateStudent.new do
-            self.admin = admin
-            self.last_name = row['LAST_NAME']
-            self.first_name = row['FIRST_NAME']
-            self.middle_name = row['MIDDLE_NAME']
-            self.sti = row['STATE_STUDENTNUMBER']
-            self.division = "094"
-            self.va_schoolid = row['SCHOOLID']
-            self.test_code = test
-            self.group_name = group
-            self.group_code = group_code
-            self.birth_date = row['DOB']
-            self.grade = row['GRADE_LEVEL']
-            self.gender = row['GENDER']
-            self.ethnicity = row['FEDETHNICITY']
-            self.race = row['VA_ERCODE']
-            self.student_number = row['STUDENT_NUMBER']
-            self.mil_conn = row['VA_MIL_CONN']
-            self.foster = row['VA_FOSTER']
-            self.primnight_rescode = row['VA_PRIMNIGHT_RESCODE']
-            self.n_code = row['VA_DISADVANTAGED']
-            self.ell_test_tier = row['VA_ELL_TEST_TIER']
-            self.ell_comp_score = row['VA_ELL_COMPOSITE_SCORE']
-            self.ell_lit_score = row['VA_ELL_LITERACY_SCORE']
-            self.dis_code = row['VA_PRIMARY_DIS_CODE']
-            self.soa_lep = row['SOL_SOA_LEP']
-            self.soa_trans = row['SOL_SOA_TRANSFER']
-            self.ayp_a = row['SOL_AYP_A']
-            self.ayp_b = row['SOL_AYP_B']
-            self.ayp_c = row['SOL_AYP_C']
-            self.ayp_d = row['SOL_AYP_D']
-            self.rp_code = row['SOL_RP_CODE']
-            self.d_code = row['SOL_D_CODE']
-            self.term_grad = row['SOL_TERM_GRAD']
-            self.formerly_lep = row['VA_LEP_SERV_CD']
-            self.online = online
-            self.recovery = recovery
-            self.retest = retest
-            self.d_code = d_code
-            self.term_grad = term_grad
-            self.proj_grad = proj_grad
-            self.retest_college = retest_college
-            self.vtln = row['SIF_STATEPRID']
-          end
-        end
-				if(!student.to_csv)
-          # Log any errors
-          student.errors.each_value do |error|
-            log.error "#{student.sti}: #{error}"
-          end
-        end
-        # Log any warnings
-        student.warns.each_value do |warn|
-          log.warn "#{student.sti}: #{warn}"
-        end
-			end
-			printf "done.\n\n"
-		rescue OCIError => e
-			puts "An error occurred"
-		  puts "Error code: #{e}"
-		ensure
-      # disconnect from server
-      dbh.logoff if dbh
-		end
-	end
+    sth = dbh.parse(query)
+    sth.bind_param(':year_id', year_id)
+    sth.bind_param(':school_id', school)
+    sth.bind_param(':alt_course_number', course.to_s)
+    sth.exec()
+   end
+   # puts sth.row_count.to_s
+   # JL Changes to add error reporting for missing STI's
+   output_array = Array.new
+   sth.fetch_hash do |fetch_row|
+    output_array << fetch_row
+   end
+   puts "Student Count: " + sth.row_count.to_s
+   log.error "STI #{sti} Not Found!" if output_array.empty?
+   output_array.each_index do |index|
+    # Old Loop
+    # while row = sth.fetch_hashOld Loop
+    row = output_array[index]
+    if ((type == 'section' || type == 'course') && 
+     !row['COURSE_NAME'].nil? &&	
+    !row['TCH_LAST_NAME'].nil?)
+    group = "#{gen_short_course(row['ALT_COURSE_NUMBER'])} " +
+    "#{row['TCH_LAST_NAME'].slice(0, 6).strip} " +
+    "#{row['EXPRESSION'].gsub(/[()]/, '').strip.slice(0,4)}"
+   end
+   if (type == 'course')
+    group_code = row['COURSE_NUMBER'] + '.' + row['SECTION_NUMBER']
+   end
+   if (admin_info[1] == 'ft') then
+    student = StateFTStudent.new do
+     self.admin = admin
+     self.last_name = row['LAST_NAME']
+     self.first_name = row['FIRST_NAME']
+     self.middle_name = row['MIDDLE_NAME']
+     self.sti = row['STATE_STUDENTNUMBER']
+     self.division = "094"
+     self.va_schoolid = row['SCHOOLID']
+     self.test_code = test
+     self.group_name = group
+     self.group_code = group_code
+     self.birth_date = row['DOB']
+     self.grade = row['GRADE_LEVEL']
+     self.gender = row['GENDER']
+     self.ethnicity = row['FEDETHNICITY']
+     self.race = row['VA_ERCODE']
+     self.student_number = row['STUDENT_NUMBER']
+     self.t1_tas = row['VA_TTITLE1_CODE']
+     self.primnight_rescode = row['VA_PRIMNIGHT_RESCODE']
+     self.neg_del = row['VA_NEGDELINQUENT_CODE']
+     self.n_code = row['VA_DISADVANTAGED']
+     self.ell_test_tier = row['VA_ELL_TEST_TIER']
+     self.ell_comp_score = row['VA_ELL_COMPOSITE_SCORE']
+     self.ell_lit_score = row['VA_ELL_LITERACY_SCORE']
+     self.dis_code = row['VA_PRIMARY_DIS_CODE']
+     self.soa_lep = row['SOL_SOA_LEP']
+     self.soa_trans = row['SOL_SOA_TRANSFER']
+     self.ayp_a = row['SOL_AYP_A']
+     self.ayp_b = row['SOL_AYP_B']
+     self.ayp_c = row['SOL_AYP_C']
+     self.ayp_d = row['SOL_AYP_D']
+     self.rp_code = row['SOL_RP_CODE']
+     self.d_code = row['SOL_D_CODE']
+     self.term_grad = row['SOL_TERM_GRAD']
+     self.formerly_lep = row['VA_LEP_SERV_CD']
+     self.online = online
+     self.retest = retest
+     self.recovery = recovery
+     self.proj_grad = proj_grad
+     self.enroll_date = row['ENTRYDATE']
+     self.enroll_code = row['ENTRYCODE']
+     self.withdrawal_date = row['EXITDATE']
+     self.withdrawal_code = row['EXITCODE']
+     self.vtln = row['SIF_STATEPRID']
+    end
+   elsif (admin_info[1] == 'v') then
+    student = StateVStudent.new do
+     self.admin = admin
+     self.last_name = row['LAST_NAME']
+     self.first_name = row['FIRST_NAME']
+     self.middle_name = row['MIDDLE_NAME']
+     self.sti = row['STATE_STUDENTNUMBER']
+     self.division = "094"
+     self.va_schoolid = row['SCHOOLID']
+     self.test_code = test
+     self.group_name = group
+     self.group_code = group_code
+     self.birth_date = row['DOB']
+     self.grade = row['GRADE_LEVEL']
+     self.gender = row['GENDER']
+     self.ethnicity = row['FEDETHNICITY']
+     self.race = row['VA_ERCODE']
+     self.student_number = row['STUDENT_NUMBER']
+     self.t1_tas = row['VA_TTITLE1_CODE']
+     self.primnight_rescode = row['VA_PRIMNIGHT_RESCODE']
+     self.neg_del = row['VA_NEGDELINQUENT_CODE']
+     self.n_code = row['VA_DISADVANTAGED']
+     self.ell_test_tier = row['VA_ELL_TEST_TIER']
+     self.ell_comp_score = row['VA_ELL_COMPOSITE_SCORE']
+     self.ell_lit_score = row['VA_ELL_LITERACY_SCORE']
+     self.dis_code = row['VA_PRIMARY_DIS_CODE']
+     self.soa_lep = row['SOL_SOA_LEP']
+     self.soa_trans = row['SOL_SOA_TRANSFER']
+     self.ayp_a = row['SOL_AYP_A']
+     self.ayp_b = row['SOL_AYP_B']
+     self.ayp_c = row['SOL_AYP_C']
+     self.ayp_d = row['SOL_AYP_D']
+     self.rp_code = row['SOL_RP_CODE']
+     self.d_code = row['SOL_D_CODE']
+     self.term_grad = row['SOL_TERM_GRAD']
+     self.formerly_lep = row['VA_LEP_SERV_CD']
+     self.recovery = recovery
+     self.retest = retest
+     self.d_code = d_code
+     self.term_grad = term_grad
+     self.proj_grad = proj_grad
+     self.vaap = vaap
+     self.vgla = vgla
+     self.vsep = vsep
+     self.enroll_date = row['ENTRYDATE']
+     self.enroll_code = row['ENTRYCODE']
+     self.withdrawal_date = row['EXITDATE']
+     self.withdrawal_code = row['EXITCODE']
+     self.vtln = row['SIF_STATEPRID']
+    end
+   elsif (admin_info[1] == 'va') then
+    student = StateARDTStudent.new do
+     self.admin = admin
+     self.last_name = row['LAST_NAME']
+     self.first_name = row['FIRST_NAME']
+     self.middle_name = row['MIDDLE_NAME']
+     self.sti = row['STATE_STUDENTNUMBER']
+     self.division = "094"
+     self.va_schoolid = row['SCHOOLID']
+     self.test_code = test
+     self.group_name = group
+     self.group_code = group_code
+     self.birth_date = row['DOB']
+     self.grade = row['GRADE_LEVEL']
+     self.gender = row['GENDER']
+     self.ethnicity = row['FEDETHNICITY']
+     self.race = row['VA_ERCODE']
+     self.dis_code = row['VA_PRIMARY_DIS_CODE']
+     self.lep_code = row['VA_LEP_SERV_CD']
+     self.enroll_date = row['ENTRYDATE']
+     self.enroll_code = row['ENTRYCODE']
+     self.withdrawal_date = row['EXITDATE']
+     self.withdrawal_code = row['EXITCODE']
+     self.vtln = row['SIF_STATEPRID']
+    end
+   else
+    student = StateStudent.new do
+     self.admin = admin
+     self.last_name = row['LAST_NAME']
+     self.first_name = row['FIRST_NAME']
+     self.middle_name = row['MIDDLE_NAME']
+     self.sti = row['STATE_STUDENTNUMBER']
+     self.division = "094"
+     self.va_schoolid = row['SCHOOLID']
+     self.test_code = test
+     self.group_name = group
+     self.group_code = group_code
+     self.birth_date = row['DOB']
+     self.grade = row['GRADE_LEVEL']
+     self.gender = row['GENDER']
+     self.ethnicity = row['FEDETHNICITY']
+     self.race = row['VA_ERCODE']
+     self.student_number = row['STUDENT_NUMBER']
+     self.mil_conn = row['VA_MIL_CONN']
+     self.foster = row['VA_FOSTER']
+     self.primnight_rescode = row['VA_PRIMNIGHT_RESCODE']
+     self.n_code = row['VA_DISADVANTAGED']
+     self.ell_test_tier = row['VA_ELL_TEST_TIER']
+     self.ell_comp_score = row['VA_ELL_COMPOSITE_SCORE']
+     self.ell_lit_score = row['VA_ELL_LITERACY_SCORE']
+     self.dis_code = row['VA_PRIMARY_DIS_CODE']
+     self.soa_lep = row['SOL_SOA_LEP']
+     self.soa_trans = row['SOL_SOA_TRANSFER']
+     self.ayp_a = row['SOL_AYP_A']
+     self.ayp_b = row['SOL_AYP_B']
+     self.ayp_c = row['SOL_AYP_C']
+     self.ayp_d = row['SOL_AYP_D']
+     self.rp_code = row['SOL_RP_CODE']
+     self.d_code = row['SOL_D_CODE']
+     self.term_grad = row['SOL_TERM_GRAD']
+     self.formerly_lep = row['VA_LEP_SERV_CD']
+     self.online = online
+     self.recovery = recovery
+     self.retest = retest
+     self.d_code = d_code
+     self.term_grad = term_grad
+     self.proj_grad = proj_grad
+     self.retest_college = retest_college
+     self.vtln = row['SIF_STATEPRID']
+    end
+   end
+   if(!student.to_csv)
+    # Log any errors
+    student.errors.each_value do |error|
+     log.error "#{student.sti}: #{error}"
+    end
+   end
+   # Log any warnings
+   student.warns.each_value do |warn|
+    log.warn "#{student.sti}: #{warn}"
+   end
+  end
+  printf "done.\n\n"
+ rescue OCIError => e
+  puts "An error occurred"
+  puts "Error code: #{e}"
+  ensure
+  # disconnect from server
+  dbh.logoff if dbh
+ end
+end
 rescue SystemCallError => errno
-	puts errno
+ puts errno
 end
