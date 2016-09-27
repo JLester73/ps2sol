@@ -21,12 +21,13 @@ opts = GetoptLong.new(
  ["--admin", "-a", GetoptLong::REQUIRED_ARGUMENT]
 )
 
+# Print usage if parameters are incorrect
 def print_usage(error)
  print "#{__FILE__}: --school <school number> --in input_file --type section,course,single --admin administration\n"
  exit
 end
 
-# Base Query
+# Base Query, used for all options
 base_fields_clause = "SELECT st.last_name, st.first_name,
   st.middle_name, st.student_number,
   TO_CHAR(st.dob, 'YYYY-MM-DD') as dob,
@@ -58,6 +59,7 @@ base_fields_clause = "SELECT st.last_name, st.first_name,
   to_char(exitdate, 'YYYY-MM-DD') AS exitdate, exitcode,
   st.schoolid"
 
+# Course fields add-on to base query select
 course_fields_clause = ", cc.course_number, cc.section_number,
   cc.expression, courses.course_name,
   teachers.last_name AS tch_last_name,
@@ -65,6 +67,7 @@ course_fields_clause = ", cc.course_number, cc.section_number,
   ps_customfields.getCoursescf(courses.id, 'alt_course_number') 
     AS alt_course_number"
 
+# Course table joins add-on to base query
 course_tables_clause = " FROM cc INNER JOIN students st ON st.id = cc.studentid
   INNER JOIN courses ON courses.course_number = cc.course_number
   INNER JOIN sections ON sections.id = cc.sectionid
@@ -73,24 +76,31 @@ course_tables_clause = " FROM cc INNER JOIN students st ON st.id = cc.studentid
   INNER JOIN terms ON terms.id = cc.termid
   INNER JOIN s_va_stu_x on s_va_stu_x.studentsdcid = st.dcid"
 
+# Restrict base query to particular terms
 base_restrict_clause = " WHERE terms.yearid = :year_id 
   AND st.schoolid = :school_id"
 
+# Restrict results to particular course terms
 course_section_restrict_clause = " AND terms.schoolid = :school_id"
 course_restrict_clause = course_section_restrict_clause + 
 " AND ps_customfields.getCoursescf(courses.id, 'alt_course_number') = 
   :alt_course_number"
 
+# Restrict results to particular sections
 section_restrict_clause = course_section_restrict_clause + 
 " AND cc.section_number = :section_num 
    AND cc.course_number = :course_num"
 
+# Query restriction used for single build option
 student_tables_restrict_clause = " FROM students st
   INNER JOIN s_va_stu_x on s_va_stu_x.studentsdcid = st.dcid
   WHERE enroll_status = 0 AND state_studentnumber = :sti"
 
+# Query restriction used for course build option
 course_section_order_clause = " ORDER BY cc.course_number, cc.section_number, 
   st.last_name, st.first_name"
+
+# Order query results by student last, first  
 student_order_clause = " ORDER BY st.last_name, st.first_name"
 
 # Generates short Course names from VA Course Codes
@@ -116,6 +126,7 @@ def gen_short_course(state_course_code)
  short_courses[state_course_code]
 end
 
+# Generates the year from the admin parameter passed
 def gen_year_id(admin_info)
  season = admin_info[2]
  year = "20" + admin_info[3]
@@ -127,6 +138,7 @@ def gen_year_id(admin_info)
  return year_id 
 end
 
+# Read in private config file with database info
 def read_config(db_login, db_password, db_instance)
  begin
   config = YAML.load_file("config/ps2sol.yaml")
@@ -136,11 +148,11 @@ def read_config(db_login, db_password, db_instance)
  end
 end
 
+# Figure out which sections to pull based on admin parameter
 def gen_term_restriction(admin_info, year_id)
  season = admin_info[2]
   year_abbrev = (year_id + 1990).to_s.slice(2, 3) + '-' +
  (year_id + 1 + 1990).to_s.slice(2, 3)
-
  if (season == 'fall')
   terms = " AND (terms.abbreviation = 'S1') "
  else
@@ -150,6 +162,7 @@ def gen_term_restriction(admin_info, year_id)
  return terms
 end
 
+# Initialize parameters
 have_type_f = false
 have_input_f = false
 have_admin_f = false
@@ -159,6 +172,8 @@ admin = ''
 input_file = ''
 school = ''
 year = ''
+
+# Read in command line parameters
 begin
  opts.each do |opt, arg|
   case opt
@@ -207,10 +222,11 @@ begin
   :filename => "#{school}-students.log", :trunc => false)
   log.level = WARN
 
+  # Start of main processing section
   begin
    dbh = OCI8.new(@db_login, @db_password, @db_instance)
    case type
-   when 'single'
+   when 'single' # Processing single option
     puts "Processing: students from #{school}:"
     if admin_info[1] == 'v'
      sti = row[0].to_i
@@ -239,13 +255,13 @@ begin
      retest_college = row[10]
     end
 
-    # Build the query
+    # Build and run the query
     query = base_fields_clause + student_tables_restrict_clause
-
     sth = dbh.parse(query)
     sth.bind_param(':sti', sti)
     sth.exec()
-   when 'section'
+	
+   when 'section' # Processing section option, not used now?
     group_code = row[0]
     section_info = row[0].split(/\./)
     test = row[1]
@@ -255,19 +271,19 @@ begin
     year_id = gen_year_id(admin_info)
     term_restrict_clause = gen_term_restriction(admin_info, year_id)
 
-    # Build the query
+    # Build and run the query
     query = base_fields_clause + course_fields_clause + 
     course_tables_clause + base_restrict_clause + 
     section_restrict_clause + term_restrict_clause + 
     course_section_order_clause
-
     sth = dbh.parse(query)
     sth.bind_param(':year_id', year_id)
     sth.bind_param(':school_id', school)
     sth.bind_param(':section_num', section_info[1])
     sth.bind_param(':course_num', section_info[0])
     sth.exec()
-   when 'course'
+	
+   when 'course' # Processing course option
     course = row[0]
     test = row[1]
     online = row[2]
@@ -278,20 +294,21 @@ begin
     year_id = gen_year_id(admin_info)
     term_restrict_clause = gen_term_restriction(admin_info, year_id)
 
-    # Build the query
+    # Build and run the query
     query = base_fields_clause + 
     course_fields_clause + course_tables_clause + 
     base_restrict_clause + course_restrict_clause + 
     term_restrict_clause + course_section_order_clause
-
     sth = dbh.parse(query)
     sth.bind_param(':year_id', year_id)
     sth.bind_param(':school_id', school)
     sth.bind_param(':alt_course_number', course.to_s)
     sth.exec()
    end
-   # puts sth.row_count.to_s
-   # JL Changes to add error reporting for missing STI's
+
+   # JL Loop changes to add error reporting for missing STI's
+   # Reads query results into array of hashes, then loops through array
+   # of results.
    output_array = Array.new
    sth.fetch_hash do |fetch_row|
     output_array << fetch_row
@@ -299,8 +316,6 @@ begin
    puts "Student Count: " + sth.row_count.to_s
    log.error "STI #{sti} Not Found!" if output_array.empty?
    output_array.each_index do |index|
-    # Old Loop
-    # while row = sth.fetch_hashOld Loop
     row = output_array[index]
     if ((type == 'section' || type == 'course') && 
      !row['COURSE_NAME'].nil? &&	
@@ -312,7 +327,7 @@ begin
    if (type == 'course')
     group_code = row['COURSE_NUMBER'] + '.' + row['SECTION_NUMBER']
    end
-   if (admin_info[1] == 'ft') then
+   if (admin_info[1] == 'ft') then # Field test data format
     student = StateFTStudent.new do
      self.admin = admin
      self.last_name = row['LAST_NAME']
@@ -358,7 +373,7 @@ begin
      self.withdrawal_code = row['EXITCODE']
      self.vtln = row['SIF_STATEPRID']
     end
-   elsif (admin_info[1] == 'v') then
+   elsif (admin_info[1] == 'v') then # VGLA data format
     student = StateVStudent.new do
      self.admin = admin
      self.last_name = row['LAST_NAME']
@@ -408,7 +423,7 @@ begin
      self.withdrawal_code = row['EXITCODE']
      self.vtln = row['SIF_STATEPRID']
     end
-   elsif (admin_info[1] == 'va') then
+   elsif (admin_info[1] == 'va') then # ARDT data format
     student = StateARDTStudent.new do
      self.admin = admin
      self.last_name = row['LAST_NAME']
@@ -434,7 +449,7 @@ begin
      self.vtln = row['SIF_STATEPRID']
     end
    else
-    student = StateStudent.new do
+    student = StateStudent.new do # Standard SOL data format
      self.admin = admin
      self.last_name = row['LAST_NAME']
      self.first_name = row['FIRST_NAME']
