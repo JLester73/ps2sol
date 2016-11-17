@@ -233,7 +233,7 @@ class StateStudent
 
     # 17. Military Connected
     @mil_conn = @mil_conn.to_i
-    if (@mil_conn.nil? || @mil_conn < 0 || @mil_conn > 4)
+    if (@mil_conn.nil? || @mil_conn < 1 || @mil_conn > 4)
       @error[:mil_conn] = "Invalid Military Code"
     end
       
