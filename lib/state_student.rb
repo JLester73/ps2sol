@@ -227,14 +227,14 @@ class StateStudent
       @errors[:race] = "No Race"
     else
       if (!@race.match(/^([0-2][0-9]|3[0-2])$/))
-        @error[:race] = "Invalid Race: #{@race}"
+        @errors[:race] = "Invalid Race: #{@race}"
       end
     end
 
     # 17. Military Connected
     @mil_conn = @mil_conn.to_i
     if (@mil_conn.nil? || @mil_conn < 1 || @mil_conn > 4)
-      @error[:mil_conn] = "Invalid Military Code"
+      @errors[:mil_conn] = "Invalid Military Code"
     end
       
     # 18. Student Number (Field Length 12)
