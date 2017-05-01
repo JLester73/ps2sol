@@ -6,7 +6,7 @@ class StateVStudent
     :ell_lit_score, :dis_code, :temp_cond, :formerly_lep, :x_code_b, :x_code_c, 
     :x_code_d, :soa_lep, :soa_trans, :ayp_a, :ayp_b, :ayp_c, :ayp_d,
     :spec_a, :spec_b, :spec_c,
-	:rp_code, :local, :local_test, :recovery, :retest, :d_code,
+    :rp_code, :local, :local_test, :recovery, :retest, :d_code,
     :term_grad, :proj_grad, :vgla, :vaap, :vsep, :z_c, :z_d, :z_e, :vtln, :tln, 
     :tfn, :eor
 
@@ -34,7 +34,7 @@ class StateVStudent
     @sti = nil	
     @ethnicity = nil
     @race = nil
-	@mil_conn = nil
+    @mil_conn = nil
     @student_number = nil
     @primnight_rescode = nil
     @foster = nil
@@ -44,7 +44,7 @@ class StateVStudent
     @ell_lit_score = nil
     @dis_code = nil
     @temp_cond = nil
-	@formerly_lep = nil
+    @formerly_lep = nil
     @x_code_b = nil
     @x_code_c = nil
     @x_code_d = nil
@@ -59,7 +59,7 @@ class StateVStudent
     @spec_c = nil
     @rp_code = nil
     @local = nil
-	@local_test = nil
+    @local_test = nil
     @recovery = nil
     @retest = nil
     @d_code = nil
