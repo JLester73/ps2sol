@@ -417,10 +417,6 @@ begin
      self.vaap = vaap
      self.vgla = vgla
      self.vsep = vsep
-     self.enroll_date = row['ENTRYDATE']
-     self.enroll_code = row['ENTRYCODE']
-     self.withdrawal_date = row['EXITDATE']
-     self.withdrawal_code = row['EXITCODE']
      self.vtln = row['SIF_STATEPRID']
     end
    elsif (admin_info[1] == 'va') then # ARDT data format
