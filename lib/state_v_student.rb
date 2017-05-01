@@ -402,32 +402,6 @@ class StateVStudent
     # 55. End of Record (Set by Default) (Field Length 1)
 
     # Extra Information
-    if (@enroll_date.nil? || @enroll_date.empty?)
-      @errors[:enroll_date] = "No Enrollment Date"
-    else
-      e_year = @enroll_date.slice(0, 4)
-      e_month = @enroll_date.slice(5, 2)
-      e_day = @enroll_date.slice(8, 2)
-      @enroll_date = "#{e_month}/#{e_day}/#{e_year}"
-    end
-    
-    if (@enroll_code.nil? || @enroll_code.empty?)
-      @errors[:enroll_code] = "No Enrollment Code"
-    else
-      @enroll_code.slice(0, 16)
-    end
-    
-    # Only include withdrawal date if there is a withdrawal code
-    if (!@withdrawal_code.nil?)
-      if (@withdrawal_date.nil?)
-        @errors[:withdrawal_date] = "No Withdrawal Date"
-      else
-        w_year = @withdrawal_date.slice(0, 4)
-        w_month = @withdrawal_date.slice(5, 2)
-        w_day = @withdrawal_date.slice(8, 2)
-        @withdrawal_date = "#{w_month}/#{w_day}/#{w_year}"
-      end
-    end     
   end
 
   def valid?
