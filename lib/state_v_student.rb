@@ -291,6 +291,8 @@ class StateVStudent
     # 27. Formerly LEP (Set by Default) (Field Length 1)
     if (!@formerly_lep.nil? && !@formerly_lep.empty? && @formerly_lep == 3)
       @formerly_lep = 'Y'
+    else
+      @formerly_lep = nil
     end
     
     # 28. X Code B (Set by Default) (Field Length 1)
