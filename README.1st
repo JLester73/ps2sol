@@ -12,7 +12,7 @@ since to support PowerSchool.  It is updated each testing session to match
 any changes released by the state.
 
 The program has been maintained since 2014 by Jason Lester, also of
-Washingon County Schools.
+Washington County Schools.
 
 **Description**
 This script exports out the CSV files needed for upload into Pearson's
@@ -37,7 +37,7 @@ Dependencies:
 - Rake 0.8.7 or higher
 - A Unix/Linux-like environment
 - Oracle Instantclient
-- PowerSchool v8 or higher (tested all the way to 10.0.3)
+- PowerSchool v8 or higher (tested all the way to 11.0.2)
 
 Ruby Dependencies:
 - Log4r Gem
@@ -130,3 +130,23 @@ Single Student Build:
     "./ps2sol --school 1000 --in retakes.csv --type single --admin wrfall16"
   This would build an import file for each line specified in the retakes.csv
   file for school 1000.
+
+Changes for Writing Sessions:
+- Virginia decided to stop having separate sessions in the fall and spring
+  for Writing tests.  In that past, you would have an admin called wrfall17
+  for Fall 2017 Writing and wrsprg18 for Spring 2018 Writing.  Now, there's
+  just a year long session called wrtg1718.  The scripts have not yet been
+  updated to support that, so for writing extracts, you need to open the CSV
+  in a text editor or Excel and change the Administration column to match
+  the new format.
+  
+Changes for 2017-2018 SRI
+- Virginia and Pearson are now calling what was once the SDU (Student Data
+  Upload) to SRI (Student Registration Import).  The scripts have been
+  updated to support the new format except for one key point.  The SRI
+  now wants a header row, whereas the SDU did not.  The scripts do not
+  currently write out a header row, so you'll need to open the CSV's it
+  generates in a text editor or Excel to add the header row.  You could use
+  the template Excel file provided by the state and just import your CSV into
+  it starting with cell $A$2.  Then, save the file as CSV and you should be
+  ready to upload to Pearson.
