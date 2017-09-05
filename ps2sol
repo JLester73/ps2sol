@@ -57,7 +57,8 @@ base_fields_clause = "SELECT st.last_name, st.first_name,
     AS va_lep_serv_cd,
   to_char(entrydate, 'YYYY-MM-DD') AS entrydate, entrycode,
   to_char(exitdate, 'YYYY-MM-DD') AS exitdate, exitcode,
-  st.schoolid"
+  st.schoolid,
+  schools.abbreviation"
 
 # Course fields add-on to base query select
 course_fields_clause = ", cc.course_number, cc.section_number,
@@ -327,6 +328,10 @@ begin
    if (type == 'course')
     group_code = row['COURSE_NUMBER'] + '.' + row['SECTION_NUMBER']
    end
+   
+   # Code to generate session name for SRI 2017 Changes
+   session_name = "#{row['ABBREVIATION']} #{group_code} #{group}"
+   
    if (admin_info[1] == 'ft') then # Field test data format
     student = StateFTStudent.new do
      self.admin = admin
@@ -481,6 +486,7 @@ begin
      self.term_grad = row['SOL_TERM_GRAD']
      self.formerly_lep = row['VA_LEP_SERV_CD']
      self.online = online
+	 self.session_name = session_name
      self.recovery = recovery
      self.retest = retest
      self.d_code = d_code

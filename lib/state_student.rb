@@ -2,12 +2,11 @@ class StateStudent
   attr_accessor :admin, :last_name, :first_name, :middle_name, :sti, :division,
     :va_schoolid, :test_code, :group_name, :group_code, :birth_date, :grade,
     :gender, :ethnicity, :race, :mil_conn, :student_number, :primnight_rescode, 
-    :foster, :n_code, :ell_test_tier, :ell_comp_score, 
-    :ell_lit_score, :dis_code, :temp_cond, :formerly_lep, :x_code_b, :x_code_c, :x_code_d, 
+    :foster, :n_code, :ell_comp_score, 
+    :dis_code, :temp_cond, :formerly_lep, :x_code_b, :x_code_c, :x_code_d, 
     :soa_lep, :soa_trans, :ayp_a, :ayp_b, :ayp_c, :ayp_d, 
-    :spec_a, :spec_b, :spec_c,
-    :rp_code, :local, :local_test, :online, :recovery, :retest, :d_code,
-    :term_grad, :proj_grad, :retest_college, :z_c, :z_d, :z_e, :vtln, :tln, 
+    :local, :local_test, :online, :session_name, :recovery, :retest, :d_code,
+    :term_grad, :proj_grad, :z_c, :z_d, :z_e, :vtln, :tln, 
     :tfn, :eor
 
   attr_reader :errors, :warns
@@ -39,9 +38,7 @@ class StateStudent
     @primnight_rescode = nil
     @foster = nil
     @n_code = nil
-    @ell_test_tier = nil
     @ell_comp_score = nil
-    @ell_lit_score = nil
     @dis_code = nil
     @temp_cond = nil
     @formerly_lep = nil
@@ -54,19 +51,15 @@ class StateStudent
     @ayp_b = nil
     @ayp_c = nil
     @ayp_d = nil
-    @spec_a = nil
-    @spec_b = nil
-    @spec_c = nil
-    @rp_code = nil
     @local = nil
     @local_test = nil
     @online
+	@session_name = nil
     @recovery = nil
     @retest = nil
     @d_code = nil
     @term_grad = nil
     @proj_grad = nil
-    @retest_college = nil
     @z_c = nil
     @z_d = nil
     @z_e = nil
@@ -87,11 +80,11 @@ class StateStudent
         @division, @va_schoolid, @test_code, @group_name, @group_code,
         @birth_date, @grade, @gender, @sti, @ethnicity, @race, @mil_conn,
         @student_number, @primnight_rescode, @foster, @n_code,
-        @ell_test_tier, @ell_comp_score, @ell_lit_score, @dis_code, @temp_cond,
+        @ell_comp_score, @dis_code, @temp_cond,
         @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @soa_lep, @soa_trans, @ayp_a, 
-        @ayp_b, @ayp_c, @ayp_d, @spec_a, @spec_b, @spec_c, @rp_code,
-        @local, @local_test, @online, @recovery, @retest, @d_code, 
-        @term_grad, @proj_grad, @retest_college, @z_c, @z_d, @z_e, @vtln, 
+        @ayp_b, @ayp_c, @ayp_d, @local, @local_test, 
+        @online, @session_name, @recovery, @retest, @d_code, 
+        @term_grad, @proj_grad, @z_c, @z_d, @z_e, @vtln, 
         @tln, @tfn, @eor]
       end
       return(valid)
@@ -105,18 +98,18 @@ class StateStudent
       @errors[:admin] = "Empty Test Administration"
     end
 
-    # 2. Last Name (Field Length 11)
+    # 2. Last Name (Field Length 25)
     if(@last_name.nil? || @last_name.empty?)
       @errors[:last_name] = "Empty Last Name"
     else
-      @last_name = @last_name.slice(0, 32) if @last_name.length > 32
+      @last_name = @last_name.slice(0, 25) if @last_name.length > 25
     end
 
-    # 3. First Name (Field Length 12)
+    # 3. First Name (Field Length 15)
     if(@first_name.nil? || @first_name.empty?)
       @errors[:first_name] = "Empty First Name"
     else
-      @first_name = @first_name.slice(0, 32) if @first_name.length > 32
+      @first_name = @first_name.slice(0, 15) if @first_name.length > 15
     end
 
     # 4. Middle Initial (Field Length 1)
@@ -265,13 +258,9 @@ class StateStudent
       @n_code = 'Y'
     end
 
-    # 22. ELL Test Tier (Field Length 1)
+    # 22. ELL Composite Score (Field Length 2) Range 10-60
 
-    # 23. ELL Composite Score (Field Length 2) Range 10-60
-
-    # 24. ELL Literacy Score (Field Length 2) Range 10-20
-
-    # 25.Disability Code (Field Length 2)
+    # 23.Disability Code (Field Length 2)
     if (!@dis_code.nil? && !@dis_code.empty?)
       # Pad with leading zero if necessary
       @dis_code = @dis_code.to_s.rjust(2, '0')
@@ -280,115 +269,107 @@ class StateStudent
       end
     end
 
-    # 26. Temporary Condition (Set by Default) (Field Length 1)
+    # 24. Temporary Condition (Set by Default) (Field Length 1)
     
-    # 27. Formerly LEP 
-    if (!@formerly_lep.nil? && !@formerly_lep.empty? && @formerly_lep.to_s == '3')
-      @formerly_lep = 'Y'
-    else
-      @formerly_lep = nil
+    # 25. Formerly LEP  (Field Length 1)
+    if (!@formerly_lep.nil?)
+	  if (!@formerly_lep.to_i.between?(1,4))
+	    @errors[:formerly_lep] = "Invalid Formerly EL Code"
+	  end
     end
     
-    # 28. X Code B (Set by Default) (Field Length 1)
+    # 26. X Code B (Set by Default) (Field Length 1)
 
-    # 29. X Code C (Set by Default) (Field Length 1)
+    # 27. X Code C (Set by Default) (Field Length 1)
    
-    # 30. X Code D (Set by Default) (Field Length 1)
+    # 28. X Code D (Set by Default) (Field Length 1)
  
-    # 31. SOA Adjustment LEP (Set by Default) (Field Length 1)
+    # 29. SOA Adjustment LEP (Set by Default) (Field Length 1)
     if (!@soa_lep.nil? && !@soa_lep.empty? && @soa_lep == 1)
          @soa_lep = 'Y'
     end
     
-    # 32. SOA Adjustment Transfer (Field Length 1)
+    # 30. SOA Adjustment Transfer (Field Length 1)
     if (!@soa_trans.nil? && !@soa_trans.empty? && @soa_trans == 1)
          @soa_trans = 'Y'
     end
     
-    # 33. AYP Adjustment A (Field Length 1)
+    # 31. AYP Adjustment A (Field Length 1)
     if (!@ayp_a.nil? && !@ayp_a.empty?)
        if !@ayp_a.match(/^A$/)
          @errors[:ayp_a] = "Invalid AYP-A code"
        end
     end
     
-    # 34. AYP Adjustment B (Field Length 1)
+    # 32. AYP Adjustment B (Field Length 1)
     if (!@ayp_b.nil? && !@ayp_b.empty?)
        if !@ayp_b.match(/^B$/)
          @errors[:ayp_b] = "Invalid AYP-B code"
        end
     end
     
-    # 35. AYP Adjustment C (Field Length 1)
+    # 33. AYP Adjustment C (Field Length 1)
     if (!@ayp_c.nil? && !@ayp_c.empty?)
        if !@ayp_c.match(/^C$/)
          @errors[:ayp_c] = "Invalid AYP-C code"
        end
     end
 
-    # 36. AYP Adjustment D (Field Length 1)
+    # 34. AYP Adjustment D (Field Length 1)
     if (!@ayp_d.nil? && !@ayp_d.empty?)
        if !@ayp_d.match(/^D$/)
          @errors[:ayp_d] = "Invalid AYP-D code"
        end
     end
     
-    # 37. Special Code A (Set by Default) (Field Length 1)
-
-    # 38. Special Code B (Set by Default) (Field Length 1)
-
-    # 39. Special Code C (Set by Default) (Field Length 1)
+    # 35. Local Use (Set by Default) (Field Length 9)
     
-    # 40. RP Code (Set by Default) (Field Length 1)
-  
-    # 41. Local Use (Set by Default) (Field Length 9)
-    
-    # 42. Local Use Test (Set by Default) Field Length 1)
+    # 36. Local Use Test (Set by Default) Field Length 1)
 
-    # 43. Online Testing (Field Length 1)
+    # 37. Online Testing (Field Length 1)
     if (@online.nil?)
       @online = nil 
     else
       @online = 'Y'
     end
     
-    # 44. Recovery (Set by Default) (Field Length 1)
+    # 38. Session Name  (Set by Default) (Field Length 50)
+	
+    # 39. Recovery (Set by Default) (Field Length 1)
     if(!@recovery.nil?)
       @recovery = 'Y'
     end
 
-    # 45. Retest (Field Length 1)
+    # 40. Retest (Field Length 1)
     if (!@retest.nil?)
       @retest = 'Y'
     end
     
-    # 46. D Code (Set by Default) (Field Length 1)
+    # 41. D Code (Set by Default) (Field Length 1)
 
-    # 47. Term Grad (Set by Default) (Field Length 1)
+    # 42. Term Grad (Set by Default) (Field Length 1)
     
-    # 48. Project Graduation (Field Length 1)
+    # 43. Project Graduation (Field Length 1)
     if (!@proj_grad.nil?)
       @proj_grad = 'Y'
     end
     
-    # 49. Retest for College Readiness (Field Length 1)
+    # 44. Z Code C (Set by Default) (Field Length 1)
 
-    # 50. Z Code C (Set by Default) (Field Length 1)
+    # 45. Z Code D (Set by Default) (Field Length 1)
 
-    # 51. Z Code D (Set by Default) (Field Length 1)
+    # 46. Z Code E (Set by Default) (Field Length 1)
 
-    # 52. Z Code E (Set by Default) (Field Length 1)
-
-    # 53. VTLN (Set by Default) (Field Length 1)
+    # 47. VTLN (Set by Default) (Field Length 1)
     if (@vtln.nil? || @vtln.empty?)
       @warns[:vtln] = "No VTLN Associated"
     end
     
-    # 54. TLN (Set by Default) (Field Length 1)
+    # 48. TLN (Set by Default) (Field Length 1)
     
-    # 55. TFN (Set by Default) (Field Length 1)
+    # 49. TFN (Set by Default) (Field Length 1)
     
-    # 56. End of Record (Set by Default) (Field Length 1)
+    # 50. End of Record (Set by Default) (Field Length 1)
   end
 
   def valid?
