@@ -1,5 +1,14 @@
 #!/usr/bin/ruby
 
+#
+# ps2sol
+#
+# Main script to generate CSV files from PowerSchool
+# for import into the Virginia SOL Testing system
+# by Pearson.
+# Copyright 2011-2017 Washington County Public Schools
+#
+
 require 'getoptlong'
 require 'oci8'
 require 'log4r'

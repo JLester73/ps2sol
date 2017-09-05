@@ -1,3 +1,8 @@
+#
+# This file runs all the tests and writes out the CSV
+# file in the format needed for main SOL testing uploads.
+#
+
 class StateStudent
   attr_accessor :admin, :last_name, :first_name, :middle_name, :sti, :division,
     :va_schoolid, :test_code, :group_name, :group_code, :birth_date, :grade,

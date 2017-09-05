@@ -1,3 +1,8 @@
+#
+# This file runs all the tests and writes out the CSV
+# file in the format needed for Field Test uploads.
+#
+
 class StateFTStudent
   attr_accessor :admin, :last_name, :first_name, :middle_name, :login, :sti, 
     :division, :va_schoolid, :test_code, :group_name, :group_code, :birth_date, 
