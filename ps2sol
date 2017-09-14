@@ -62,8 +62,7 @@ base_fields_clause = "SELECT st.last_name, st.first_name,
     AS va_ell_composite_score,
   ps_customfields.getstudentscf(st.id, 'va_ell_literacy_score') 
     AS va_ell_literacy_score,
-  ps_customfields.getstudentscf(st.id, 'VA_LEP_Serv_Cd') 
-    AS va_lep_serv_cd,
+  S_VA_STU_X.ESL_Code AS va_formerly_el,
   to_char(entrydate, 'YYYY-MM-DD') AS entrydate, entrycode,
   to_char(exitdate, 'YYYY-MM-DD') AS exitdate, exitcode,
   st.schoolid,
@@ -490,7 +489,7 @@ begin
      self.ayp_d = row['SOL_AYP_D']
      self.d_code = row['SOL_D_CODE']
      self.term_grad = row['SOL_TERM_GRAD']
-     self.formerly_lep = row['VA_LEP_SERV_CD']
+     self.formerly_lep = row['VA_FORMERLY_EL']
      self.online = online
 	 self.session_name = session_name
      self.recovery = recovery

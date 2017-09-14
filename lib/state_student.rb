@@ -281,6 +281,9 @@ class StateStudent
 	  if (!@formerly_lep.to_i.between?(1,4))
 	    @errors[:formerly_lep] = "Invalid Formerly EL Code"
 	  end
+	  if (!@ell_comp_score.nil?)
+	    @errors[:formerly_lep] = "Can't have Formerly EL with ELL Score"\
+	  end
     end
     
     # 26. X Code B (Set by Default) (Field Length 1)
