@@ -277,13 +277,13 @@ class StateStudent
     # 24. Temporary Condition (Set by Default) (Field Length 1)
     
     # 25. Formerly LEP  (Field Length 1)
-    if (!@formerly_lep.nil?)
-	  if (!@formerly_lep.to_i.between?(1,4))
-	    @errors[:formerly_lep] = "Invalid Formerly EL Code"
-	  end
+    if (@formerly_lep.to_s == '4')
 	  if (!@ell_comp_score.nil?)
-	    @errors[:formerly_lep] = "Can't have Formerly EL with ELL Score"\
+	    @errors[:formerly_lep] = "Can't have Formerly EL of 4 with ELL Score"\
 	  end
+      @formerly_lep = '4'
+    else
+      @formerly_lep = nil
     end
     
     # 26. X Code B (Set by Default) (Field Length 1)
