@@ -103,6 +103,7 @@ section_restrict_clause = course_section_restrict_clause +
 # Query restriction used for single build option
 student_tables_restrict_clause = " FROM students st
   INNER JOIN s_va_stu_x on s_va_stu_x.studentsdcid = st.dcid
+  INNER JOIN schools on st.schoolid = schools.school_number
   WHERE enroll_status = 0 AND state_studentnumber = :sti"
 
 # Query restriction used for course build option
@@ -338,7 +339,11 @@ begin
    end
    
    # Code to generate session name for SRI 2017 Changes
-   session_name = "#{row['ABBREVIATION']} - #{group_code} - #{group}"
+   if (type == 'course')
+     session_name = "#{row['ABBREVIATION']} - #{group_code} - #{group}"
+   else
+     session_name = nil
+   end
    
    if (admin_info[1] == 'ft') then # Field test data format
     student = StateFTStudent.new do
