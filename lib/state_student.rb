@@ -190,7 +190,7 @@ class StateStudent
       @grade = @grade.to_s.rjust(2, '0')
 
       # Valid grades are 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, TT
-      if(!@grade.to_s.match(/^(0[3456789]|1[012]|TT)$/))
+      if(!@grade.to_s.match(/^(0[0123456789]|-1|1[012]|TT)$/))
         @errors[:grade] = "Invalid Grade: #{@grade}"
       end
     end
