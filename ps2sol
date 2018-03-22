@@ -421,8 +421,6 @@ begin
      self.d_code = row['SOL_D_CODE']
      self.term_grad = row['SOL_TERM_GRAD']
      self.formerly_lep = row['VA_FORMERLY_EL']
-     self.online = online
-	 self.session_name = session_name
      self.recovery = recovery
      self.retest = retest
      self.d_code = d_code
