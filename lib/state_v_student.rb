@@ -4,15 +4,14 @@
 #
 
 class StateVStudent
-  attr_accessor :admin, :last_name, :first_name, :middle_name, :sti, :division,
+  attr_accessor :admin, :last_name, :first_name, :middle_name, :filler1, :division,
     :va_schoolid, :test_code, :group_name, :group_code, :birth_date, :grade,
-    :gender, :ethnicity, :race, :mil_conn, :student_number, :primnight_rescode, 
-    :foster, :n_code, :ell_test_tier, :ell_comp_score, 
-    :ell_lit_score, :dis_code, :temp_cond, :formerly_lep, :x_code_b, :x_code_c, 
+    :gender, :sti, :ethnicity, :race, :mil_conn, :student_number, :primnight_rescode, 
+    :foster, :n_code, :ell_comp_score, 
+    :dis_code, :temp_cond, :formerly_lep, :x_code_b, :x_code_c, 
     :x_code_d, :soa_lep, :soa_trans, :ayp_a, :ayp_b, :ayp_c, :ayp_d,
-    :spec_a, :spec_b, :spec_c,
-    :rp_code, :local, :local_test, :recovery, :retest, :d_code,
-    :term_grad, :proj_grad, :vgla, :vaap, :vsep, :z_c, :z_d, :z_e, :vtln, :tln, 
+    :local, :local_test, :filler2, :filler3, :recovery, :retest, :d_code,
+    :term_grad, :proj_grad, :z_c, :z_d, :z_e, :vtln, :tln, 
     :tfn, :eor
 
   attr_reader :errors, :warns
@@ -27,7 +26,7 @@ class StateVStudent
     @last_name = nil
     @first_name = nil
     @middle_name = nil
-    @login = nil
+    @filler1 = nil # Not used for VAAP, should be blank
     @division = "094"   # 094 is the division's state code
     @va_schoolid = nil
     @test_code = nil
@@ -44,9 +43,7 @@ class StateVStudent
     @primnight_rescode = nil
     @foster = nil
     @n_code = nil
-    @ell_test_tier = nil
     @ell_comp_score = nil
-    @ell_lit_score = nil
     @dis_code = nil
     @temp_cond = nil
     @formerly_lep = nil
@@ -59,20 +56,15 @@ class StateVStudent
     @ayp_b = nil
     @ayp_c = nil
     @ayp_d = nil
-    @spec_a = nil
-    @spec_b = nil
-    @spec_c = nil
-    @rp_code = nil
     @local = nil
     @local_test = nil
+	@filler2 = nil # Not used for VAAP, should be blank
+	@filler3 = nil # Not used for VAAP, should be blank
     @recovery = nil
     @retest = nil
     @d_code = nil
     @term_grad = nil
     @proj_grad = nil
-    @vgla = nil
-    @vaap = nil
-    @vsep = nil
     @z_c = nil
     @z_d = nil
     @z_e = nil
@@ -89,15 +81,15 @@ class StateVStudent
     valid = valid?
     if (valid)
       CSV.open("#{@va_schoolid.to_s.to_i}-students.csv", 'a+') do |csv|
-        csv << [@admin, @last_name, @first_name, @middle_name, @login,
+        csv << [@admin, @last_name, @first_name, @middle_name, @filler1,
         @division, @va_schoolid, @test_code, @group_name, @group_code,
         @birth_date, @grade, @gender, @sti, @ethnicity, @race, @mil_conn, @student_number,
         @primnight_rescode, @foster, @n_code,
-        @ell_test_tier, @ell_comp_score, @ell_lit_score, @dis_code, @temp_cond,
+        @ell_comp_score, @dis_code, @temp_cond,
         @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @soa_lep, @soa_trans, @ayp_a, 
-        @ayp_b, @ayp_c, @ayp_d, @spec_a, @spec_b, @spec_c, @rp_code,
-        @local, @local_test, @recovery, @retest, @d_code, @term_grad, @proj_grad, @vgla, 
-        @vaap, @vsep, @z_c, @z_d, @z_e, @vtln, 
+        @ayp_b, @ayp_c, @ayp_d, @local, @local_test,
+        @filler2, @filler3, @recovery, @retest, @d_code, @term_grad, @proj_grad,
+        @z_c, @z_d, @z_e, @vtln, 
         @tln, @tfn, @eor]
       end
       return(valid)
@@ -132,8 +124,8 @@ class StateVStudent
       @middle_name = @middle_name.slice(0, 1) if @middle_name.length > 1
     end
 
-    # 5. Login ID (See 14.)
-
+    # 5. Filler1 (Set by Default)
+    	
     # 6. Division Code (Set by Default)
 
     # 7. VA School Code (Field Length 4)
@@ -241,7 +233,7 @@ class StateVStudent
     @mil_conn = @mil_conn.to_i
     if (@mil_conn.nil? || @mil_conn < 1 || @mil_conn > 4)
       @errors[:mil_conn] = "Invalid Military Code"
-    end	
+    end
 	
     # 18. Student Number (Field Length 12)
     if (@student_number.nil? || @student_number.zero?)
@@ -261,9 +253,11 @@ class StateVStudent
       end
 
     # 19. Student Category - Homeless (Field Length 1)
-    if (!@primnight_rescode.nil? && !@primnight_rescode.empty?)
-      @primnight_rescode = 'Y'
-    end
+      if (!@primnight_rescode.nil?)
+        if (!@primnight_rescode.to_i.between?(1,4))  
+          @errors[:primnight_rescode] = "Invalid PrimNight ResCode"
+        end
+      end
 
     # 20 Foster Care
     if (!@foster.nil?)
@@ -276,13 +270,9 @@ class StateVStudent
       @n_code = 'Y'
     end
 
-    # 22. ELL Test Tier (Field Length 1)
-
-    # 23. ELL Composite Score (Field Length 2) Range 10-60
-
-    # 24. ELL Literacy Score (Field Length 2) Range 10-20
-
-    # 25.Disability Code (Field Length 2)
+    # 22. ELL Composite Score (Field Length 2) Range 10-60
+	
+    # 23.Disability Code (Field Length 2)
     if (!@dis_code.nil? && !@dis_code.empty?)
       # Pad with leading zero if necessary
       @dis_code = @dis_code.to_s.rjust(2, '0')
@@ -291,124 +281,106 @@ class StateVStudent
       end
     end
 
-    # 26. Temporary Condition (Set by Default) (Field Length 1)
+    # 24. Temporary Condition (Set by Default) (Field Length 1)
     
-    # 27. Formerly LEP (Set by Default) (Field Length 1)
-    if (!@formerly_lep.nil? && !@formerly_lep.empty? && @formerly_lep == 3)
-      @formerly_lep = 'Y'
+    # 25. Formerly LEP  (Field Length 1)
+    if (@formerly_lep.to_s == '4')
+	  if (!@ell_comp_score.nil?)
+	    @errors[:formerly_lep] = "Can't have Formerly EL of 4 with ELL Score"\
+	  end
+      @formerly_lep = '4'
     else
       @formerly_lep = nil
     end
     
-    # 28. X Code B (Set by Default) (Field Length 1)
+    # 26. X Code B (Set by Default) (Field Length 1)
 
-    # 29. X Code C (Set by Default) (Field Length 1)
-	
-    # 30. X Code D (Set by Default) (Field Length 1)
+    # 27. X Code C (Set by Default) (Field Length 1)
+   
+    # 28. X Code D (Set by Default) (Field Length 1)
     
-    # 31. SOA Adjustment LEP (Set by Default) (Field Length 1)
+# 29. SOA Adjustment LEP (Set by Default) (Field Length 1)
     if (!@soa_lep.nil? && !@soa_lep.empty? && @soa_lep == 1)
          @soa_lep = 'Y'
     end
     
-    # 32. SOA Adjustment Transfer (Field Length 1)
+    # 30. SOA Adjustment Transfer (Field Length 1)
     if (!@soa_trans.nil? && !@soa_trans.empty? && @soa_trans == 1)
          @soa_trans = 'Y'
     end
     
-    # 33. AYP Adjustment A (Field Length 1)
+    # 31. AYP Adjustment A (Field Length 1)
     if (!@ayp_a.nil? && !@ayp_a.empty?)
        if !@ayp_a.match(/^A$/)
          @errors[:ayp_a] = "Invalid AYP-A code"
        end
     end
     
-    # 34. AYP Adjustment B (Field Length 1)
+    # 32. AYP Adjustment B (Field Length 1)
     if (!@ayp_b.nil? && !@ayp_b.empty?)
        if !@ayp_b.match(/^B$/)
          @errors[:ayp_b] = "Invalid AYP-B code"
        end
     end
     
-    # 35. AYP Adjustment C (Field Length 1)
+    # 33. AYP Adjustment C (Field Length 1)
     if (!@ayp_c.nil? && !@ayp_c.empty?)
        if !@ayp_c.match(/^C$/)
          @errors[:ayp_c] = "Invalid AYP-C code"
        end
     end
 
-    
-    # 36. AYP Adjustment D (Field Length 1)
+    # 34. AYP Adjustment D (Field Length 1)
     if (!@ayp_d.nil? && !@ayp_d.empty?)
        if !@ayp_d.match(/^D$/)
          @errors[:ayp_d] = "Invalid AYP-D code"
        end
     end
     
-    # 37. Special Code A (Set by Default) (Field Length 1)
-
-    # 38. Special Code B (Set by Default) (Field Length 1)
-
-    # 39. Special Code C (Set by Default) (Field Length 1)
+    # 35. Local Use (Set by Default) (Field Length 9)
     
-    # 40. RP Code (Set by Default) (Field Length 1)
-  
-    # 41. Local Use Student (Set by Default) (Field Length 9)
+    # 36. Local Use Test (Set by Default) Field Length 1)
 	
-    # 42. Local Use Test (Set by Default) (Field Length 9)	
+	# 37. Filler2 (Set by Default)
+	
+	# 38. Filler3 (Set by Default)
     
-    # 43. Recovery (Set by Default) (Field Length 1)
+    # 39. Recovery (Set by Default) (Field Length 1)
     if(!@recovery.nil?)
       @recovery = 'Y'
     end
 
-    # 44. Retest (Field Length 1)
+    # 40. Retest (Field Length 1)
     if (!@retest.nil?)
       @retest = 'Y'
     end
     
-    # 45. D Code (Set by Default) (Field Length 1)
+    # 41. D Code (Set by Default) (Field Length 1)
 
-    # 46. Term Grad (Set by Default) (Field Length 1)
+    # 42. Term Grad (Set by Default) (Field Length 1)
     
-    # 47. Project Graduation (Field Length 1)
+    # 43. Project Graduation (Field Length 1)
     if (!@proj_grad.nil?)
       @proj_grad = 'Y'
     end
     
-    # 48. VGLA (Field Length 1)
-    if (!@vgla.nil?)
-      @vgla = 'Y'
-    end
+    # 44. Z Code C (Set by Default) (Field Length 1)
 
-    # 49. VAAP
-    if (!@vaap.nil?)
-      @vaap = 'Y'
-    end
+    # 45. Z Code D (Set by Default) (Field Length 1)
 
-    # 50. VSEP
-    if (!@vsep.nil?)
-      @vsep = 'Y'
-    end
+    # 46. Z Code E (Set by Default) (Field Length 1)
 
-    # 51. Z Code C (Set by Default) (Field Length 1)
-    
-    # 52. Z Code D (Set by Default) (Field Length 1)
-
-    # 53. Z Code E (Set by Default) (Field Length 1)
-
-    # 52. VTLN (Set by Default) (Field Length 1)
+    # 47. VTLN (Set by Default) (Field Length 1)
     if (@vtln.nil? || @vtln.empty?)
       @warns[:vtln] = "No VTLN Associated"
     end
     
-    # 53. TLN (Set by Default) (Field Length 1)
+    # 48. TLN (Set by Default) (Field Length 1)
     
-    # 54. TFN (Set by Default) (Field Length 1)
+    # 49. TFN (Set by Default) (Field Length 1)
     
-    # 55. End of Record (Set by Default) (Field Length 1)
+    # 50. End of Record (Set by Default) (Field Length 1)
 
-    # Extra Information
   end
 
   def valid?
