@@ -406,13 +406,11 @@ begin
      self.ethnicity = row['FEDETHNICITY']
      self.race = row['VA_ERCODE']
      self.student_number = row['STUDENT_NUMBER']
-	 self.mil_conn = row['VA_MIL_CONN']	 
-	 self.foster = row['VA_FOSTER']
+     self.mil_conn = row['VA_MIL_CONN']
+     self.foster = row['VA_FOSTER']
      self.primnight_rescode = row['VA_PRIMNIGHT_RESCODE']
      self.n_code = row['VA_DISADVANTAGED']
-     self.ell_test_tier = row['VA_ELL_TEST_TIER']
      self.ell_comp_score = row['VA_ELL_COMPOSITE_SCORE']
-     self.ell_lit_score = row['VA_ELL_LITERACY_SCORE']
      self.dis_code = row['VA_PRIMARY_DIS_CODE']
      self.soa_lep = row['SOL_SOA_LEP']
      self.soa_trans = row['SOL_SOA_TRANSFER']
@@ -420,18 +418,16 @@ begin
      self.ayp_b = row['SOL_AYP_B']
      self.ayp_c = row['SOL_AYP_C']
      self.ayp_d = row['SOL_AYP_D']
-     self.rp_code = row['SOL_RP_CODE']
      self.d_code = row['SOL_D_CODE']
      self.term_grad = row['SOL_TERM_GRAD']
-     self.formerly_lep = row['VA_LEP_SERV_CD']
+     self.formerly_lep = row['VA_FORMERLY_EL']
+     self.online = online
+	 self.session_name = session_name
      self.recovery = recovery
      self.retest = retest
      self.d_code = d_code
      self.term_grad = term_grad
      self.proj_grad = proj_grad
-     self.vaap = vaap
-     self.vgla = vgla
-     self.vsep = vsep
      self.vtln = row['SIF_STATEPRID']
     end
    elsif (admin_info[1] == 'va') then # ARDT data format
