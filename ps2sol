@@ -324,7 +324,12 @@ begin
     output_array << fetch_row
    end
    
+   # Outputs an error now for courses with 0 students.  This will be
+   # immediately followed by an error about a missing STI (since there
+   # are no students in the course).
+   # To-Do: Modify logic to break from loop if the course has 0 students
    log.error "Course Has 0 Students Enrolled" if (sth.row_count==0)
+   
    puts "Student Count: " + sth.row_count.to_s
    log.error "STI #{sti} Not Found!" if output_array.empty?
    output_array.each_index do |index|
