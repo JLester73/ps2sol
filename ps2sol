@@ -323,6 +323,8 @@ begin
    sth.fetch_hash do |fetch_row|
     output_array << fetch_row
    end
+   
+   log.error "Course Has 0 Students Enrolled" if (sth.row_count==0)
    puts "Student Count: " + sth.row_count.to_s
    log.error "STI #{sti} Not Found!" if output_array.empty?
    output_array.each_index do |index|
