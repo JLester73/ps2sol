@@ -9,7 +9,7 @@ class StateStudent
     :gender, :ethnicity, :race, :mil_conn, :student_number, :primnight_rescode, 
     :foster, :n_code, :ell_comp_score, 
     :dis_code, :temp_cond, :formerly_lep, :x_code_b, :x_code_c, :x_code_d, 
-    :soa_lep, :soa_trans, :ayp_a, :ayp_b, :ayp_c, :ayp_d, 
+    :soa_lep, :soa_trans, :recent_el, 
     :local, :local_test, :online, :session_name, :recovery, :retest, :d_code,
     :term_grad, :proj_grad, :z_c, :z_d, :z_e, :vtln, :tln, 
     :tfn, :eor
@@ -52,10 +52,7 @@ class StateStudent
     @xcode_d = nil
     @soa_lep = nil
     @soa_trans = nil
-    @ayp_a = nil
-    @ayp_b = nil
-    @ayp_c = nil
-    @ayp_d = nil
+    @recent_el = nil
     @local = nil
     @local_test = nil
     @online
@@ -86,8 +83,8 @@ class StateStudent
         @birth_date, @grade, @gender, @sti, @ethnicity, @race, @mil_conn,
         @student_number, @primnight_rescode, @foster, @n_code,
         @ell_comp_score, @dis_code, @temp_cond,
-        @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @soa_lep, @soa_trans, @ayp_a, 
-        @ayp_b, @ayp_c, @ayp_d, @local, @local_test, 
+        @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @soa_lep, @soa_trans,
+        @recent_el, @local, @local_test, 
         @online, @session_name, @recovery, @retest, @d_code, 
         @term_grad, @proj_grad, @z_c, @z_d, @z_e, @vtln, 
         @tln, @tfn, @eor]
@@ -121,7 +118,7 @@ class StateStudent
     if(@middle_name.nil? || @middle_name.empty?)
       @warns[:middle_name] = "Empty Middle Name"
     else
-      @middle_name = @middle_name.slice(0, 1) if @middle_name.length > 1
+      @middle_name = @middle_name.slice(0, 15) if @middle_name.length > 15
     end
 
     # 5. Login ID (See 14.)
@@ -302,82 +299,56 @@ class StateStudent
          @soa_trans = 'Y'
     end
     
-    # 31. AYP Adjustment A (Field Length 1)
-    if (!@ayp_a.nil? && !@ayp_a.empty?)
-       if !@ayp_a.match(/^A$/)
-         @errors[:ayp_a] = "Invalid AYP-A code"
-       end
-    end
+    # 31. Recently Arrived EL (Field Length 1)
     
-    # 32. AYP Adjustment B (Field Length 1)
-    if (!@ayp_b.nil? && !@ayp_b.empty?)
-       if !@ayp_b.match(/^B$/)
-         @errors[:ayp_b] = "Invalid AYP-B code"
-       end
-    end
+    # 32. Local Use (Set by Default) (Field Length 9)
     
-    # 33. AYP Adjustment C (Field Length 1)
-    if (!@ayp_c.nil? && !@ayp_c.empty?)
-       if !@ayp_c.match(/^C$/)
-         @errors[:ayp_c] = "Invalid AYP-C code"
-       end
-    end
+    # 33. Local Use Test (Set by Default) Field Length 1)
 
-    # 34. AYP Adjustment D (Field Length 1)
-    if (!@ayp_d.nil? && !@ayp_d.empty?)
-       if !@ayp_d.match(/^D$/)
-         @errors[:ayp_d] = "Invalid AYP-D code"
-       end
-    end
-    
-    # 35. Local Use (Set by Default) (Field Length 9)
-    
-    # 36. Local Use Test (Set by Default) Field Length 1)
-
-    # 37. Online Testing (Field Length 1)
+    # 34. Online Testing (Field Length 1)
     if (@online.nil?)
       @online = nil 
     else
       @online = 'Y'
     end
     
-    # 38. Session Name  (Set by Default) (Field Length 50)
+    # 35. Session Name  (Set by Default) (Field Length 50)
 	
-    # 39. Recovery (Set by Default) (Field Length 1)
+    # 36. Recovery (Set by Default) (Field Length 1)
     if(!@recovery.nil?)
       @recovery = 'Y'
     end
 
-    # 40. Retest (Field Length 1)
+    # 37. Retest (Field Length 1)
     if (!@retest.nil?)
       @retest = 'Y'
     end
     
-    # 41. D Code (Set by Default) (Field Length 1)
+    # 38. D Code (Set by Default) (Field Length 1)
 
-    # 42. Term Grad (Set by Default) (Field Length 1)
+    # 39. Term Grad (Set by Default) (Field Length 1)
     
-    # 43. Project Graduation (Field Length 1)
+    # 40. Project Graduation (Field Length 1)
     if (!@proj_grad.nil?)
       @proj_grad = 'Y'
     end
     
-    # 44. Z Code C (Set by Default) (Field Length 1)
+    # 41. Z Code C (Set by Default) (Field Length 1)
 
-    # 45. Z Code D (Set by Default) (Field Length 1)
+    # 42. Z Code D (Set by Default) (Field Length 1)
 
-    # 46. Z Code E (Set by Default) (Field Length 1)
+    # 43. Z Code E (Set by Default) (Field Length 1)
 
-    # 47. VTLN (Set by Default) (Field Length 1)
+    # 44. VTLN (Set by Default) (Field Length 1)
     if (@vtln.nil? || @vtln.empty?)
       @warns[:vtln] = "No VTLN Associated"
     end
     
-    # 48. TLN (Set by Default) (Field Length 1)
+    # 45. TLN (Set by Default) (Field Length 1)
     
-    # 49. TFN (Set by Default) (Field Length 1)
+    # 46. TFN (Set by Default) (Field Length 1)
     
-    # 50. End of Record (Set by Default) (Field Length 1)
+    # 47. End of Record (Set by Default) (Field Length 1)
   end
 
   def valid?

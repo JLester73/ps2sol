@@ -6,7 +6,7 @@
 # Main script to generate CSV files from PowerSchool
 # for import into the Virginia SOL Testing system
 # by Pearson.
-# Copyright 2011-2017 Washington County Public Schools
+# Copyright 2011-2018 Washington County Public Schools
 #
 
 require 'getoptlong'
@@ -486,10 +486,6 @@ begin
      self.dis_code = row['VA_PRIMARY_DIS_CODE']
      self.soa_lep = row['SOL_SOA_LEP']
      self.soa_trans = row['SOL_SOA_TRANSFER']
-     self.ayp_a = row['SOL_AYP_A']
-     self.ayp_b = row['SOL_AYP_B']
-     self.ayp_c = row['SOL_AYP_C']
-     self.ayp_d = row['SOL_AYP_D']
      self.d_code = row['SOL_D_CODE']
      self.term_grad = row['SOL_TERM_GRAD']
      self.formerly_lep = row['VA_FORMERLY_EL']
