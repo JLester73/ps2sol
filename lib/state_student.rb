@@ -344,9 +344,20 @@ class StateStudent
       @warns[:vtln] = "No VTLN Associated"
     end
     
-    # 45. TLN (Set by Default) (Field Length 1)
+    # 45. TLN (Set by Default) (Field Length 40)
+    if (@tln.nil? || @tln.empty?)
+      @warns[:tln] = "No Teacher Last Name"
+	else
+	  @tln.slice(0, 40)
+    end
     
-    # 46. TFN (Set by Default) (Field Length 1)
+    # 46. TFN (Set by Default) (Field Length 25)
+    if (@tfn.nil? || @tfn.empty?)
+      @warns[:tfn] = "No Teacher First Name"
+	else
+	  @tfn.slice(0, 25)
+
+    end
     
     # 47. End of Record (Set by Default) (Field Length 1)
   end

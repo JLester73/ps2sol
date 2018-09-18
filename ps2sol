@@ -72,6 +72,7 @@ base_fields_clause = "SELECT st.last_name, st.first_name,
 course_fields_clause = ", cc.course_number, cc.section_number,
   cc.expression, courses.course_name,
   teachers.last_name AS tch_last_name,
+  teachers.first_name AS tch_first_name,
   teachers.sif_stateprid AS sif_stateprid,
   ps_customfields.getCoursescf(courses.id, 'alt_course_number') 
     AS alt_course_number"
@@ -497,6 +498,8 @@ begin
      self.term_grad = term_grad
      self.proj_grad = proj_grad
      self.vtln = row['SIF_STATEPRID']
+	 self.tln = row['TCH_LAST_NAME']
+	 self.tfn = row['TCH_FIRST_NAME']
     end
    end
    if(!student.to_csv)
