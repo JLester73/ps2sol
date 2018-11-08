@@ -347,11 +347,7 @@ begin
    end
    
    # Code to generate session name for SRI 2017 Changes
-   if (type == 'course')
-     session_name = "#{row['ABBREVIATION']} - #{group_code} - #{group}"
-   else
-     session_name = nil
-   end
+   session_name = "#{row['ABBREVIATION']} - #{group_code} - #{group}"
    
    if (admin_info[1] == 'ft') then # Field test data format
     student = StateFTStudent.new do
