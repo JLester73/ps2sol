@@ -54,7 +54,6 @@ class StateVStudent
 	@recent_el = nil
     @local = nil
     @local_test = nil
-    @recovery = nil
     @z_c = nil
     @z_d = nil
     @z_e = nil
