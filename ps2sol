@@ -6,7 +6,7 @@
 # Main script to generate CSV files from PowerSchool
 # for import into the Virginia SOL Testing system
 # by Pearson.
-# Copyright 2011-2018 Washington County Public Schools
+# Copyright 2011-2019 Washington County Public Schools
 #
 
 require 'getoptlong'
