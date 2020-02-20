@@ -11,7 +11,7 @@ class StateVStudent
     :dis_code, :temp_cond, :formerly_lep, :x_code_b, :x_code_c, :x_code_d, 
     :soa_lep, :soa_trans, :recent_el, 
     :local, :local_test, :recovery,
-    :z_c, :z_d, :z_e, :vtln, :tln, 
+    :z_c, :z_d, :z_e, :z_f, :vtln, :tln, 
     :tfn, :eor
   attr_reader :errors, :warns
 
@@ -57,6 +57,7 @@ class StateVStudent
     @z_c = nil
     @z_d = nil
     @z_e = nil
+	@z_f = nil
     @vtln = nil
     @tln = nil
     @tfn = nil
@@ -78,7 +79,7 @@ class StateVStudent
         @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @soa_lep, @soa_trans, @recent_el, 
         @local, @local_test, @filler, @filler, @recovery,
 		@filler, @filler, @filler, @filler,
-        @z_c, @z_d, @z_e, @vtln, 
+        @filler, @z_d, @z_e, @z_f, @vtln, 
         @tln, @tfn, @eor]
       end
       return(valid)
@@ -314,25 +315,27 @@ class StateVStudent
     
     # 40. Filler (Set by Default)
     
-    # 41. Z Code C (Set by Default) (Field Length 1)
+    # 41. Filler (Set by Default)
 
     # 42. Z Code D (Set by Default) (Field Length 1)
 
     # 43. Z Code E (Set by Default) (Field Length 1)
+	
+    # 44. Z Code F (Set by Default) (Field Length 1)
 
-    # 44. VTLN (Set by Default) (Field Length 1)
+    # 45. VTLN (Set by Default) (Field Length 1)
     if (@vtln.nil? || @vtln.empty?)
       @warns[:vtln] = "No VTLN Associated"
     end
     
-    # 45. TLN (Set by Default) (Field Length 40)
+    # 46. TLN (Set by Default) (Field Length 40)
     if (@tln.nil? || @tln.empty?)
       @warns[:tln] = "No Teacher Last Name"
 	else
 	  @tln.slice(0, 40)
     end
     
-    # 46. TFN (Set by Default) (Field Length 25)
+    # 47. TFN (Set by Default) (Field Length 25)
     if (@tfn.nil? || @tfn.empty?)
       @warns[:tfn] = "No Teacher First Name"
 	else
@@ -340,7 +343,7 @@ class StateVStudent
 
     end
     
-    # 47. End of Record (Set by Default) (Field Length 1)
+    # 48. End of Record (Set by Default) (Field Length 1)
   end
   
 
