@@ -141,7 +141,7 @@ class StateVStudent
       @group_name = @group_name.gsub(/[^A-Za-z0-9 ]/, '')
 
       # This is limited to 20 characters 
-      @group_name.slice(0, 20)
+      @group_name = @group_name.slice(0, 20)
     end
 
     # 10. Group Code (Field Length 10)
