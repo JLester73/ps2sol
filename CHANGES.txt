@@ -1,0 +1,31 @@
+3/19/2021
+
+Due to the odd schedule for 2020-2021, I had to add some
+important changes to both the Rakefile and ps2sol.  In
+our case, we have some students in-person and some students
+fully virtual.  We track that in PowerSchool using the Track
+field in the Students table.  For us, A means A-Day
+(Monday, Tuesday), B means B-Day (Thursday, Friday),
+C means fully in-person, and D means fully virtual.
+
+If you pass the parameter --track to ps2sol, you need
+to include a p (in-person) or v (virtual) as well.
+
+Example, pull only virtual students from school 40, the
+command might look like this:
+
+  ./ps2sol --school 40 --in 40.csv --type course --admin nwsprg21 --track v
+  
+In the Rakefile, a line was added for TRACK in case
+you want to run all schools for virtual or all for
+in-person.  To run all in-person, set that line like:
+
+  TRACK = '--track p'
+  
+To run all virtual:
+
+  TRACK = '--track v'
+  
+To run all students:
+
+  TRACK = ''
