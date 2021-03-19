@@ -368,17 +368,27 @@ begin
     row = output_array[index]
     if ((type == 'section' || type == 'course') && 
      !row['COURSE_NAME'].nil? &&	
-    !row['TCH_LAST_NAME'].nil?)
-    group = "#{gen_short_course(row['ALT_COURSE_NUMBER'])} " +
-    "#{row['TCH_LAST_NAME'].slice(0, 6).strip} " +
-    "#{row['EXPRESSION'].gsub(/[()]/, '').strip.slice(0,4)}"
-   end
+     !row['TCH_LAST_NAME'].nil?)
+	 if (track == 'v')
+	   group = "V " + "#{gen_short_course(row['ALT_COURSE_NUMBER'])} " +
+       "#{row['TCH_LAST_NAME'].slice(0, 4).strip} " +
+       "#{row['EXPRESSION'].gsub(/[()]/, '').strip.slice(0,4)}"
+	 else
+       group = "#{gen_short_course(row['ALT_COURSE_NUMBER'])} " +
+       "#{row['TCH_LAST_NAME'].slice(0, 6).strip} " +
+       "#{row['EXPRESSION'].gsub(/[()]/, '').strip.slice(0,4)}"
+	 end
+    end
    if (type == 'course')
     group_code = row['COURSE_NUMBER'] + '.' + row['SECTION_NUMBER']
    end
    
    # Code to generate session name for SRI 2017 Changes
-   session_name = "#{row['ABBREVIATION']} - #{group_code} - #{group}"
+   if (track == 'v')
+     session_name = ""
+   else
+     session_name = "#{row['ABBREVIATION']} - #{group_code} - #{group}"
+   end
    
    if (admin_info[1] == 'ft') then # Field test data format
     student = StateFTStudent.new do
