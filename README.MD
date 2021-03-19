@@ -5,6 +5,10 @@ that something won't get messed up in either PowerSchool or PEM
 by using this project.  Use at your own risk, understand what the
 commands will be doing, and use in a test environment if possible!
 
+**CHANGES**
+See the CHANGES.txt file for any important changes from the previous
+release.
+
 **Background**
 This program was created by Chris Edwards of Washington County Public Schools
 in Virginia.  The original version worked with SASI and has been updated

@@ -27,12 +27,13 @@ opts = GetoptLong.new(
  ["--in", "-i", GetoptLong::REQUIRED_ARGUMENT],
  ["--school", "-s", GetoptLong::REQUIRED_ARGUMENT],
  ["--type", "-t", GetoptLong::REQUIRED_ARGUMENT],
- ["--admin", "-a", GetoptLong::REQUIRED_ARGUMENT]
+ ["--admin", "-a", GetoptLong::REQUIRED_ARGUMENT],
+ ["--track", GetoptLong::OPTIONAL_ARGUMENT]
 )
 
 # Print usage if parameters are incorrect
 def print_usage(error)
- print "#{__FILE__}: --school <school number> --in input_file --type section,course,single --admin administration\n"
+ print "#{__FILE__}: --school <school number> --in input_file --type section,course,single --admin administration --track p,v (optional)\n"
  exit
 end
 
@@ -173,16 +174,38 @@ def gen_term_restriction(admin_info, year_id)
  return terms
 end
 
+def gen_track_restriction(track, have_track_f)
+  if (have_track_f)
+    case track
+	 when 'p'
+	  # Restrict base query to particular student schedule A,B,C tracks
+      track_clause = " AND (st.track = 'A' OR st.track = 'B' OR st.track='C')"
+	when 'v'
+	  # Restrict base query to particular student schedule D track
+      track_clause = " AND st.track = 'D'" 
+	else
+	  puts ""
+	  puts "Invalid track parameter, must be p for in-person or v for virtual"
+	  puts ""
+	end
+  else track_clause = " "
+  end
+  return track_clause
+end
+	  
+
 # Initialize parameters
 have_type_f = false
 have_input_f = false
 have_admin_f = false
 have_school_f = false
+have_track_f = false
 type = ''
 admin = ''
 input_file = ''
 school = ''
 year = ''
+track = ''
 
 # Read in command line parameters
 begin
@@ -209,6 +232,9 @@ begin
   when '--admin'
    admin = arg
    have_admin_f = true
+  when '--track'
+   track = arg
+   have_track_f = true
   end
  end
 
@@ -281,10 +307,11 @@ begin
     # Get year id and term restrictions for query
     year_id = gen_year_id(admin_info)
     term_restrict_clause = gen_term_restriction(admin_info, year_id)
-
+	
     # Build and run the query
     query = base_fields_clause + course_fields_clause + 
     course_tables_clause + base_restrict_clause + 
+	track_restrict_clause +
     section_restrict_clause + term_restrict_clause + 
     course_section_order_clause
     sth = dbh.parse(query)
@@ -304,11 +331,15 @@ begin
     # Get year id and term restrictions for query
     year_id = gen_year_id(admin_info)
     term_restrict_clause = gen_term_restriction(admin_info, year_id)
+	
+	# Get track clause for in-person/virtual if needed
+	track_restrict_clause = gen_track_restriction(track, have_track_f)
 
     # Build and run the query
     query = base_fields_clause + 
     course_fields_clause + course_tables_clause + 
-    base_restrict_clause + course_restrict_clause + 
+    base_restrict_clause + 
+	track_restrict_clause + course_restrict_clause + 
     term_restrict_clause + course_section_order_clause
     sth = dbh.parse(query)
     sth.bind_param(':year_id', year_id)
