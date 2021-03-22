@@ -135,15 +135,6 @@ Single Student Build:
   This would build an import file for each line specified in the retakes.csv
   file for school 1000.
 
-Changes for Writing Sessions:
-- Virginia decided to stop having separate sessions in the fall and spring
-  for Writing tests.  In that past, you would have an admin called wrfall17
-  for Fall 2017 Writing and wrsprg18 for Spring 2018 Writing.  Now, there's
-  just a year long session called wrtg1718.  The scripts have not yet been
-  updated to support that, so for writing extracts, you need to open the CSV
-  in a text editor or Excel and change the Administration column to match
-  the new format.
-  
 Changes for 2017-2018 SRI
 - Virginia and Pearson are now calling what was once the SDU (Student Data
   Upload) to SRI (Student Registration Import).  The scripts have been
@@ -154,7 +145,7 @@ Changes for 2017-2018 SRI
   the template Excel file provided by the state and just import your CSV into
   it starting with cell $A$2.  Then, save the file as CSV and you should be
   ready to upload to Pearson.  You can also cat them all together using
-  the headers.csv file with a command like:
-    cat headers.csv 1000-students.csv 1010-students.csv >>nwfall18.csv
+  the headers.inp file with a command like:
+    cat headers.inp 1000-students.csv 1010-students.csv >>nwfall18.csv
   That would give you a file named nwfall18.csv with the correct headers
   and the students for school numbers 1000 and 1010.
