@@ -150,6 +150,21 @@ def gen_year_id(admin_info)
  return year_id 
 end
 
+def gen_writing_admin(admin_info)
+ season = admin_info[2]
+ if (season == 'fall')
+   beg_year = admin_info[3]
+   end_year = admin_info[3].to_i + 1
+   admin = "wr" + beg_year + end_year
+   return admin
+ else
+   beg_year = admin_info[3].to_i - 1
+   end_year = admin_info[3]
+   admin = "wrtg" + beg_year.to_s + end_year.to_s
+   return admin
+ end
+end
+
 # Read in private config file with database info
 def read_config(db_login, db_password, db_instance)
  begin
@@ -163,7 +178,7 @@ end
 # Figure out which sections to pull based on admin parameter
 def gen_term_restriction(admin_info, year_id)
  season = admin_info[2]
-  year_abbrev = (year_id + 1990).to_s.slice(2, 3) + '-' +
+ year_abbrev = (year_id + 1990).to_s.slice(2, 3) + '-' +
  (year_id + 1 + 1990).to_s.slice(2, 3)
  if (season == 'fall')
   terms = " AND (terms.abbreviation = 'S1') "
@@ -388,6 +403,10 @@ begin
      session_name = ""
    else
      session_name = "#{row['ABBREVIATION']} - #{group_code} - #{group}"
+   end
+   
+   if (admin_info[1] == 'wr')
+    admin = gen_writing_admin(admin_info)
    end
    
    if (admin_info[1] == 'ft') then # Field test data format

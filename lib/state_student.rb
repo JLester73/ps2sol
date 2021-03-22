@@ -134,6 +134,9 @@ class StateStudent
       if (!@va_schoolid.match(/^[0-9]{4}$/))
         @errors[:va_schoolid] = "School ID must be 4 numbers"
       end
+	if (@va_schoolid == '8000')
+	  @va_schoolid = '8888'
+	end
     end
 
     # 8. Test Code (Field Length 6)
