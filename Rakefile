@@ -24,3 +24,8 @@ desc "Clean out this project for a fresh build"
 task :clean do
   rm FileList['*-students.csv','*.log']
 end
+
+desc "Clean out school input files"
+task :clobber do
+  rm FileList['*.csv']
+end
