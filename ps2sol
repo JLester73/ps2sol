@@ -155,12 +155,27 @@ def gen_writing_admin(admin_info)
  if (season == 'fall')
    beg_year = admin_info[3]
    end_year = admin_info[3].to_i + 1
-   admin = "wr" + beg_year + end_year
+   admin = "wrtg" + beg_year + end_year
    return admin
  else
    beg_year = admin_info[3].to_i - 1
    end_year = admin_info[3]
    admin = "wrtg" + beg_year.to_s + end_year.to_s
+   return admin
+ end
+end
+
+def gen_vaap_admin(admin_info)
+ season = admin_info[2]
+ if (season == 'fall')
+   beg_year = admin_info[3]
+   end_year = admin_info[3].to_i + 1
+   admin = "vaap" + beg_year + end_year
+   return admin
+ else
+   beg_year = admin_info[3].to_i - 1
+   end_year = admin_info[3]
+   admin = "vaap" + beg_year.to_s + end_year.to_s
    return admin
  end
 end
@@ -266,9 +281,9 @@ begin
  # Read in config file
  read_config(@db_login, @db_password, @db_instance)
  printf "Processing: %i\n", school
+ admin = admin.slice(0, 8) if admin.length > 8
+ admin_info = admin.match(/^(wr|nw|ft|va|v)(fall|sprg|sprng|ardt|summ)([0-9]{2})$/)
  CSV.foreach(input_file, :headers => :first_row) do |row|
-  admin = admin.slice(0, 8) if admin.length > 8
-  admin_info = admin.match(/^(wr|nw|ft|va|v)(fall|sprg|sprng|ardt|summ)([0-9]{2})$/)
   log  = Logger.new('Student')
   log.outputters = FileOutputter.new('Student',
   :filename => "#{school}-students.log", :trunc => false)
@@ -408,6 +423,10 @@ begin
    if (admin_info[1] == 'wr')
     admin = gen_writing_admin(admin_info)
    end
+   
+   if (admin_info[1] == 'v')
+    admin = gen_vaap_admin(admin_info)
+   end   
    
    if (admin_info[1] == 'ft') then # Field test data format
     student = StateFTStudent.new do
