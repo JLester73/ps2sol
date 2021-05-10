@@ -259,10 +259,12 @@ class StateStudent
     end
 
     # 21. N-Code (Free / Reduced) (Field Length 1)
-    if (!@n_code.nil? && !@n_code.empty?) || 
-      (!@primnight_rescode.nil? && !@primnight_rescode.empty?)
+    if ((@n_code == '1') || (!@primnight_rescode.nil? && !@primnight_rescode.empty?))
       @n_code = 'Y'
+    else
+      @n_code = 'N'
     end
+
 
     # 22. ELL Composite Score (Field Length 2) Range 10-60
 
