@@ -262,7 +262,7 @@ class StateStudent
     if ((@n_code == '1') || (!@primnight_rescode.nil? && !@primnight_rescode.empty?))
       @n_code = 'Y'
     else
-      @n_code = 'N'
+      @n_code = ''
     end
 
 

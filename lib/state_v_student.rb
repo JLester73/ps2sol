@@ -253,7 +253,7 @@ class StateVStudent
     if ((@n_code == '1') || (!@primnight_rescode.nil? && !@primnight_rescode.empty?))
       @n_code = 'Y'
     else
-      @n_code = 'N'
+      @n_code = ''
     end
 
     # 22. ELL Composite Score (Field Length 2) Range 10-60
