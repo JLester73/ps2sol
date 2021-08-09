@@ -1,3 +1,15 @@
+8/9/2021
+
+Added code to properly handle the new growth assessment tests.
+To pull students for the new growth assessment tests, use
+sg for the first part of the administration.  For Fall 2021
+for example, the admin parameter would be sgfall21.  If
+it sees you were doing an "sg" extract, it pulls all students
+in those courses for the year, not just S1/S2.  Otherwise, it
+wouldn't get 1st semester students in a year-long class.
+
+Also found a bug in the term code and fixed that.
+
 3/22/2021
 
 Added code to properly handle the year-long writing administrations.

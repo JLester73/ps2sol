@@ -21,6 +21,7 @@ require_relative 'lib/state_student.rb'
 require_relative 'lib/state_ardt_student.rb'
 require_relative 'lib/state_field_test_student.rb'
 require_relative 'lib/state_v_student.rb'
+require_relative 'lib/state_sga_student.rb'
 
 # Option parsing
 opts = GetoptLong.new(
@@ -155,12 +156,27 @@ def gen_writing_admin(admin_info)
  if (season == 'fall')
    beg_year = admin_info[3]
    end_year = admin_info[3].to_i + 1
-   admin = "wrtg" + beg_year + end_year
+   admin = "wrtg" + beg_year.to_s + end_year.to_s
    return admin
  else
    beg_year = admin_info[3].to_i - 1
    end_year = admin_info[3]
    admin = "wrtg" + beg_year.to_s + end_year.to_s
+   return admin
+ end
+end
+
+def gen_sga_admin(admin_info)
+ season = admin_info[2]
+ if (season == 'fall')
+   beg_year = admin_info[3]
+   end_year = admin_info[3].to_i + 1
+   admin = "nwrm" + beg_year.to_s + end_year.to_s
+   return admin
+ else
+   beg_year = admin_info[3].to_i - 1
+   end_year = admin_info[3]
+   admin = "nwrm" + beg_year.to_s + end_year.to_s
    return admin
  end
 end
@@ -195,11 +211,15 @@ def gen_term_restriction(admin_info, year_id)
  season = admin_info[2]
  year_abbrev = (year_id + 1990).to_s.slice(2, 3) + '-' +
  (year_id + 1 + 1990).to_s.slice(2, 3)
- if (season == 'fall')
-  terms = " AND (terms.abbreviation = 'S1') "
+ if (admin_info[1] == 'sg')
+   terms = " "
  else
-  terms = " AND (terms.abbreviation = 'S2' or " +
-  "terms.abbreviation = '#{year_abbrev}') "
+   if (season == 'fall')
+    terms = " AND (terms.abbreviation = 'S1') "
+   else
+    terms = " AND (terms.abbreviation = 'S2' or " +
+    "terms.abbreviation = '#{year_abbrev}') "
+   end
  end
  return terms
 end
@@ -282,7 +302,7 @@ begin
  read_config(@db_login, @db_password, @db_instance)
  printf "Processing: %i\n", school
  admin = admin.slice(0, 8) if admin.length > 8
- admin_info = admin.match(/^(wr|nw|ft|va|v)(fall|sprg|sprng|ardt|summ)([0-9]{2})$/)
+ admin_info = admin.match(/^(wr|sg|nw|ft|va|v)(fall|sprg|sprng|ardt|summ)([0-9]{2})$/)
  CSV.foreach(input_file, :headers => :first_row) do |row|
   log  = Logger.new('Student')
   log.outputters = FileOutputter.new('Student',
@@ -350,7 +370,6 @@ begin
     sth.bind_param(':section_num', section_info[1])
     sth.bind_param(':course_num', section_info[0])
     sth.exec()
-	
    when 'course' # Processing course option
     course = row[0]
     test = row[1]
@@ -422,6 +441,10 @@ begin
    
    if (admin_info[1] == 'wr')
     admin = gen_writing_admin(admin_info)
+   end
+   
+   if (admin_info[1] == 'sg')
+    admin = gen_sga_admin(admin_info)
    end
    
    if (admin_info[1] == 'v')
@@ -527,6 +550,46 @@ begin
      self.withdrawal_date = row['EXITDATE']
      self.withdrawal_code = row['EXITCODE']
      self.vtln = row['SIF_STATEPRID']
+    end
+   elsif (admin_info[1] == 'sg') then # SGA data format
+    student = SGAStudent.new do # SGA data format
+     self.admin = admin
+     self.last_name = row['LAST_NAME']
+     self.first_name = row['FIRST_NAME']
+     self.middle_name = row['MIDDLE_NAME']
+     self.sti = row['STATE_STUDENTNUMBER']
+     self.division = "094"
+     self.va_schoolid = row['SCHOOLID']
+     self.test_code = test
+     self.group_name = group
+     self.group_code = group_code
+     self.birth_date = row['DOB']
+     self.grade = row['GRADE_LEVEL']
+     self.gender = row['GENDER']
+     self.ethnicity = row['FEDETHNICITY']
+     self.race = row['VA_ERCODE']
+     self.student_number = row['STUDENT_NUMBER']
+     self.mil_conn = row['VA_MIL_CONN']
+     self.foster = row['VA_FOSTER']
+     self.primnight_rescode = row['VA_PRIMNIGHT_RESCODE']
+     self.n_code = row['VA_DISADVANTAGED']
+     self.ell_comp_score = row['VA_ELL_COMPOSITE_SCORE']
+     self.dis_code = row['VA_PRIMARY_DIS_CODE']
+     self.soa_lep = row['SOL_SOA_LEP']
+     self.soa_trans = row['SOL_SOA_TRANSFER']
+     self.d_code = row['SOL_D_CODE']
+     self.term_grad = row['SOL_TERM_GRAD']
+     self.formerly_lep = row['VA_FORMERLY_EL']
+     self.online = online
+	 self.session_name = session_name
+     self.recovery = recovery
+     self.retest = retest
+     self.d_code = d_code
+     self.term_grad = term_grad
+     self.proj_grad = proj_grad
+     self.vtln = row['SIF_STATEPRID']
+	 self.tln = row['TCH_LAST_NAME']
+	 self.tfn = row['TCH_FIRST_NAME']
     end
    else
     student = StateStudent.new do # Standard SOL data format
