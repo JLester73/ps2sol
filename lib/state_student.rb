@@ -6,11 +6,12 @@
 class StateStudent
   attr_accessor :admin, :last_name, :first_name, :middle_name, :sti, :division,
     :va_schoolid, :test_code, :group_name, :group_code, :birth_date, :grade,
-    :gender, :ethnicity, :race, :mil_conn, :student_number, :primnight_rescode, 
+    :gender, :ethnicity, :race, :mil_conn, :mop_flag, :mop_resdiv,
+	:student_number, :primnight_rescode, 
     :foster, :n_code, :ell_comp_score, 
     :dis_code, :temp_cond, :formerly_lep, :x_code_b, :x_code_c, :x_code_d, 
     :soa_lep, :soa_trans, :recent_el, 
-    :local, :local_test, :online, :session_name, :recovery, :retest, :d_code,
+    :local, :local_test, :online, :session_name, :recovery, :retest,
     :term_grad, :proj_grad, :par_req, :z_e, :z_f, :z_g, :vtln, :tln, 
     :tfn, :eor
 
@@ -38,7 +39,9 @@ class StateStudent
     @sti = nil
     @ethnicity = nil
     @race = nil
-    @mil_conn = nil 
+    @mil_conn = nil
+	@mop_flag = nil
+	@mop_resdiv = nil
     @student_number = nil
     @primnight_rescode = nil
     @foster = nil
@@ -59,7 +62,7 @@ class StateStudent
 	@session_name = nil
     @recovery = nil
     @retest = nil
-    @d_code = nil
+	@filler = nil
     @term_grad = nil
     @proj_grad = nil
     @par_req = nil
@@ -82,11 +85,12 @@ class StateStudent
         csv << [@admin, @last_name, @first_name, @middle_name, @login,
         @division, @va_schoolid, @test_code, @group_name, @group_code,
         @birth_date, @grade, @gender, @sti, @ethnicity, @race, @mil_conn,
+		@mop_flag, @mop_resdiv,
         @student_number, @primnight_rescode, @foster, @n_code,
         @ell_comp_score, @dis_code, @temp_cond,
         @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @soa_lep, @soa_trans,
         @recent_el, @local, @local_test, 
-        @online, @session_name, @recovery, @retest, @d_code, 
+        @online, @session_name, @recovery, @retest, @filler, 
         @term_grad, @proj_grad, @par_req, @z_e, @z_f, @z_g, @vtln, 
         @tln, @tfn, @eor]
       end
@@ -235,8 +239,19 @@ class StateStudent
     if (@mil_conn.nil? || @mil_conn < 1 || @mil_conn > 4)
       @errors[:mil_conn] = "Invalid Military Code"
     end
+
+    # 18. MOP Flag
+	@mop_flag = @mop_flag.to_i
+	if (@mop_flag == 1 || @mop_flag == 2)
+	  @mop_flag = "Y"
+	else
+	  @mop_flag = "N"
+	end
+	
+    # 19. MOP Resident Division (Set by Default)
+	
       
-    # 18. Student Number (Field Length 12)
+    # 20. Student Number (Field Length 12)
     if (@student_number.nil? || @student_number.zero?)
       @warns[:student_number] = 'No Student Number'
     else
@@ -246,29 +261,28 @@ class StateStudent
       @student_number = @student_number.to_s.slice(0,12)
     end
 
-    # 19. Student Category - Homeless (Field Length 1)
+    # 21. Student Category - Homeless (Field Length 1)
       if (!@primnight_rescode.nil?)
         if (!@primnight_rescode.to_i.between?(1,4))  
           @errors[:primnight_rescode] = "Invalid PrimNight ResCode"
         end
       end
 
-    # 20 Foster Care
+    # 22. Foster Care
     if (!@foster.nil?)
       @foster = "Y"
     end
 
-    # 21. N-Code (Free / Reduced) (Field Length 1)
+    # 23. N-Code (Free / Reduced) (Field Length 1)
     if ((@n_code == '1') || (!@primnight_rescode.nil? && !@primnight_rescode.empty?))
       @n_code = 'Y'
     else
       @n_code = ''
     end
 
+    # 24. ELL Composite Score (Field Length 2) Range 10-60
 
-    # 22. ELL Composite Score (Field Length 2) Range 10-60
-
-    # 23.Disability Code (Field Length 2)
+    # 25.Disability Code (Field Length 2)
     if (!@dis_code.nil? && !@dis_code.empty?)
       # Pad with leading zero if necessary
       @dis_code = @dis_code.to_s.rjust(2, '0')
@@ -277,9 +291,9 @@ class StateStudent
       end
     end
 
-    # 24. Temporary Condition (Set by Default) (Field Length 1)
+    # 26. Temporary Condition (Set by Default) (Field Length 1)
     
-    # 25. Formerly LEP  (Field Length 1)
+    # 27. Formerly LEP  (Field Length 1)
     if (@formerly_lep.to_s == '4')
 	  if (!@ell_comp_score.nil?)
 	    @errors[:formerly_lep] = "Can't have Formerly EL of 4 with ELL Score"\
@@ -289,77 +303,77 @@ class StateStudent
       @formerly_lep = nil
     end
     
-    # 26. X Code B (Set by Default) (Field Length 1)
+    # 28. X Code B (Set by Default) (Field Length 1)
 
-    # 27. X Code C (Set by Default) (Field Length 1)
+    # 29. X Code C (Set by Default) (Field Length 1)
    
-    # 28. X Code D (Set by Default) (Field Length 1)
+    # 30. X Code D (Set by Default) (Field Length 1)
  
-    # 29. SOA Adjustment LEP (Set by Default) (Field Length 1)
+    # 31. SOA Adjustment LEP (Set by Default) (Field Length 1)
     if (!@soa_lep.nil? && !@soa_lep.empty? && @soa_lep == 1)
          @soa_lep = 'Y'
     end
     
-    # 30. SOA Adjustment Transfer (Field Length 1)
+    # 32. SOA Adjustment Transfer (Field Length 1)
     if (!@soa_trans.nil? && !@soa_trans.empty? && @soa_trans == 1)
          @soa_trans = 'Y'
     end
     
-    # 31. Recently Arrived EL (Field Length 1)
+    # 33. Recently Arrived EL (Field Length 1)
     
-    # 32. Local Use (Set by Default) (Field Length 9)
+    # 34. Local Use (Set by Default) (Field Length 9)
     
-    # 33. Local Use Test (Set by Default) Field Length 1)
+    # 35. Local Use Test (Set by Default) Field Length 1)
 
-    # 34. Online Testing (Field Length 1)
+    # 36. Online Testing (Field Length 1)
     if (@online.nil?)
       @online = nil 
     else
       @online = 'Y'
     end
     
-    # 35. Session Name  (Set by Default) (Field Length 50)
+    # 37. Session Name  (Set by Default) (Field Length 50)
 	
-    # 36. Recovery (Set by Default) (Field Length 1)
+    # 38. Recovery (Set by Default) (Field Length 1)
     if(!@recovery.nil?)
       @recovery = 'Y'
     end
 
-    # 37. Retest (Field Length 1)
+    # 39. Retest (Field Length 1)
     if (!@retest.nil?)
       @retest = 'Y'
     end
     
-    # 38. D Code (Set by Default) (Field Length 1)
+    # 40. D Code (Set by Default) (Field Length 1)
 
-    # 39. Term Grad (Set by Default) (Field Length 1)
+    # 41. Term Grad (Set by Default) (Field Length 1)
     
-    # 40. Project Graduation (Field Length 1)
+    # 42. Project Graduation (Field Length 1)
     if (!@proj_grad.nil?)
       @proj_grad = 'Y'
     end
     
-    # 41. Parent Requested (Set by Default) (Field Length 1)
+    # 43. Parent Requested (Set by Default) (Field Length 1)
 
-    # 42. Z Code E (Set by Default) (Field Length 1)
+    # 44. Z Code E (Set by Default) (Field Length 1)
 	
-    # 43. Z Code F (Set by Default) (Field Length 1)
+    # 45. Z Code F (Set by Default) (Field Length 1)
 
-    # 44. Z Code G (Set by Default) (Field Length 1)
+    # 46. Z Code G (Set by Default) (Field Length 1)
 
-    # 45. VTLN (Set by Default) (Field Length 1)
+    # 47. VTLN (Set by Default) (Field Length 1)
     if (@vtln.nil? || @vtln.empty?)
       @warns[:vtln] = "No VTLN Associated"
     end
     
-    # 46. TLN (Set by Default) (Field Length 40)
+    # 48. TLN (Set by Default) (Field Length 40)
     if (@tln.nil? || @tln.empty?)
       @warns[:tln] = "No Teacher Last Name"
 	else
 	  @tln.slice(0, 40)
     end
     
-    # 47. TFN (Set by Default) (Field Length 25)
+    # 49. TFN (Set by Default) (Field Length 25)
     if (@tfn.nil? || @tfn.empty?)
       @warns[:tfn] = "No Teacher First Name"
 	else
@@ -367,7 +381,7 @@ class StateStudent
 
     end
     
-    # 48. End of Record (Set by Default) (Field Length 1)
+    # 50. End of Record (Set by Default) (Field Length 1)
   end
 
   def valid?
