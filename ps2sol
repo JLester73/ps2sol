@@ -48,6 +48,8 @@ base_fields_clause = "SELECT st.last_name, st.first_name,
   ps_customfields.getstudentscf(st.id, 'va_title1_code') 
     AS va_title1_code,
   S_VA_STU_X.Military_Connected AS va_mil_conn,
+  S_VA_STU_X.MOP_Flag AS va_mop_flag,
+  S_VA_STU_X.MOP_Resident_Division AS va_mop_resdiv,
   ps_customfields.getstudentscf(st.id, 'VA_FosterCare')
     AS va_foster,
   ps_customfields.getstudentscf(st.id, 'va_PrimNight_ResCode') 
@@ -610,6 +612,8 @@ begin
      self.race = row['VA_ERCODE']
      self.student_number = row['STUDENT_NUMBER']
      self.mil_conn = row['VA_MIL_CONN']
+     self.mop_flag = row['VA_MOP_FLAG']	 
+     self.mop_resdiv = row['VA_MOP_RESDIV']	 	 
      self.foster = row['VA_FOSTER']
      self.primnight_rescode = row['VA_PRIMNIGHT_RESCODE']
      self.n_code = row['VA_DISADVANTAGED']
@@ -617,14 +621,12 @@ begin
      self.dis_code = row['VA_PRIMARY_DIS_CODE']
      self.soa_lep = row['SOL_SOA_LEP']
      self.soa_trans = row['SOL_SOA_TRANSFER']
-     self.d_code = row['SOL_D_CODE']
      self.term_grad = row['SOL_TERM_GRAD']
      self.formerly_lep = row['VA_FORMERLY_EL']
      self.online = online
 	 self.session_name = session_name
      self.recovery = recovery
      self.retest = retest
-     self.d_code = d_code
      self.term_grad = term_grad
      self.proj_grad = proj_grad
      self.vtln = row['SIF_STATEPRID']
