@@ -269,8 +269,10 @@ class StateStudent
       end
 
     # 22. Foster Care
-    if (!@foster.nil?)
-      @foster = "Y"
+    if (@foster == '1')
+      @foster = 'Y'
+    else
+      @foster = ''
     end
 
     # 23. N-Code (Free / Reduced) (Field Length 1)
