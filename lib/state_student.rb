@@ -11,7 +11,7 @@ class StateStudent
     :foster, :n_code, :ell_comp_score, 
     :dis_code, :temp_cond, :formerly_lep, :x_code_b, :x_code_c, :x_code_d, 
     :soa_lep, :soa_trans, :recent_el, 
-    :local, :local_test, :online, :session_name, :recovery, :retest,
+    :local, :local_test, :online, :session_name, :recovery, :retest, :slife,
     :term_grad, :proj_grad, :par_req, :z_e, :z_f, :z_g, :vtln, :tln, 
     :tfn, :eor
 
@@ -59,6 +59,7 @@ class StateStudent
     @local = nil
     @local_test = nil
     @online
+	@slife = nil	
 	@session_name = nil
     @recovery = nil
     @retest = nil
@@ -85,12 +86,12 @@ class StateStudent
         csv << [@admin, @last_name, @first_name, @middle_name, @login,
         @division, @va_schoolid, @test_code, @group_name, @group_code,
         @birth_date, @grade, @gender, @sti, @ethnicity, @race, @mil_conn,
-		@mop_flag, @mop_resdiv,
+		@mop_flag, @mop_resdiv, @filler,
         @student_number, @primnight_rescode, @foster, @n_code,
         @ell_comp_score, @dis_code, @temp_cond,
         @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @soa_lep, @soa_trans,
         @recent_el, @local, @local_test, 
-        @online, @session_name, @recovery, @retest, @filler, 
+        @online, @session_name, @recovery, @retest, @slife, 
         @term_grad, @proj_grad, @par_req, @z_e, @z_f, @z_g, @vtln, 
         @tln, @tfn, @eor]
       end
@@ -250,8 +251,9 @@ class StateStudent
 	
     # 19. MOP Resident Division (Set by Default)
 	
+	# 20. Virtual Virginia (Set by Default)
       
-    # 20. Student Number (Field Length 12)
+    # 21. Student Number (Field Length 12)
     if (@student_number.nil? || @student_number.zero?)
       @warns[:student_number] = 'No Student Number'
     else
@@ -261,30 +263,30 @@ class StateStudent
       @student_number = @student_number.to_s.slice(0,12)
     end
 
-    # 21. Student Category - Homeless (Field Length 1)
+    # 22. Student Category - Homeless (Field Length 1)
       if (!@primnight_rescode.nil?)
         if (!@primnight_rescode.to_i.between?(1,4))  
           @errors[:primnight_rescode] = "Invalid PrimNight ResCode"
         end
       end
 
-    # 22. Foster Care
+    # 23. Foster Care
     if (@foster == '1')
       @foster = 'Y'
     else
       @foster = ''
     end
 
-    # 23. N-Code (Free / Reduced) (Field Length 1)
+    # 24. N-Code (Free / Reduced) (Field Length 1)
     if ((@n_code == '1') || (!@primnight_rescode.nil? && !@primnight_rescode.empty?))
       @n_code = 'Y'
     else
       @n_code = ''
     end
 
-    # 24. ELL Composite Score (Field Length 2) Range 10-60
+    # 25. ELL Composite Score (Field Length 2) Range 10-60
 
-    # 25.Disability Code (Field Length 2)
+    # 26. Disability Code (Field Length 2)
     if (!@dis_code.nil? && !@dis_code.empty?)
       # Pad with leading zero if necessary
       @dis_code = @dis_code.to_s.rjust(2, '0')
@@ -293,9 +295,9 @@ class StateStudent
       end
     end
 
-    # 26. Temporary Condition (Set by Default) (Field Length 1)
+    # 27. Temporary Condition (Set by Default) (Field Length 1)
     
-    # 27. Formerly LEP  (Field Length 1)
+    # 28. Formerly LEP  (Field Length 1)
     if (@formerly_lep.to_s == '4')
 	  if (!@ell_comp_score.nil?)
 	    @errors[:formerly_lep] = "Can't have Formerly EL of 4 with ELL Score"\
@@ -305,77 +307,82 @@ class StateStudent
       @formerly_lep = nil
     end
     
-    # 28. X Code B (Set by Default) (Field Length 1)
+    # 29. X Code B (Set by Default) (Field Length 1)
 
-    # 29. X Code C (Set by Default) (Field Length 1)
+    # 30. X Code C (Set by Default) (Field Length 1)
    
-    # 30. X Code D (Set by Default) (Field Length 1)
+    # 31. X Code D (Set by Default) (Field Length 1)
  
-    # 31. SOA Adjustment LEP (Set by Default) (Field Length 1)
+    # 32. SOA Adjustment LEP (Set by Default) (Field Length 1)
     if (!@soa_lep.nil? && !@soa_lep.empty? && @soa_lep == 1)
          @soa_lep = 'Y'
     end
     
-    # 32. SOA Adjustment Transfer (Field Length 1)
+    # 33. SOA Adjustment Transfer (Field Length 1)
     if (!@soa_trans.nil? && !@soa_trans.empty? && @soa_trans == 1)
          @soa_trans = 'Y'
     end
     
-    # 33. Recently Arrived EL (Field Length 1)
+    # 34. Recently Arrived EL (Field Length 1)
     
-    # 34. Local Use (Set by Default) (Field Length 9)
+    # 35. Local Use (Set by Default) (Field Length 9)
     
-    # 35. Local Use Test (Set by Default) Field Length 1)
+    # 36. Local Use Test (Set by Default) Field Length 1)
 
-    # 36. Online Testing (Field Length 1)
+    # 37. Online Testing (Field Length 1)
     if (@online.nil?)
       @online = nil 
     else
       @online = 'Y'
     end
     
-    # 37. Session Name  (Set by Default) (Field Length 50)
+    # 38. Session Name  (Set by Default) (Field Length 50)
 	
-    # 38. Recovery (Set by Default) (Field Length 1)
+    # 39. Recovery (Set by Default) (Field Length 1)
     if(!@recovery.nil?)
       @recovery = 'Y'
     end
 
-    # 39. Retest (Field Length 1)
+    # 40. Retest (Field Length 1)
     if (!@retest.nil?)
       @retest = 'Y'
     end
     
     # 40. D Code (Set by Default) (Field Length 1)
 
-    # 41. Term Grad (Set by Default) (Field Length 1)
+    # 41. SLIFE (Field Length 1)
+    if (@slife != 'Y')
+      @slife = ''
+    end	
+
+    # 42. Term Grad (Set by Default) (Field Length 1)
     
-    # 42. Project Graduation (Field Length 1)
+    # 43. Project Graduation (Field Length 1)
     if (!@proj_grad.nil?)
       @proj_grad = 'Y'
     end
     
-    # 43. Parent Requested (Set by Default) (Field Length 1)
+    # 44. Parent Requested (Set by Default) (Field Length 1)
 
-    # 44. Z Code E (Set by Default) (Field Length 1)
+    # 45. Z Code E (Set by Default) (Field Length 1)
 	
-    # 45. Z Code F (Set by Default) (Field Length 1)
+    # 46. Z Code F (Set by Default) (Field Length 1)
 
-    # 46. Z Code G (Set by Default) (Field Length 1)
+    # 47. Z Code G (Set by Default) (Field Length 1)
 
-    # 47. VTLN (Set by Default) (Field Length 1)
+    # 48. VTLN (Set by Default) (Field Length 1)
     if (@vtln.nil? || @vtln.empty?)
       @warns[:vtln] = "No VTLN Associated"
     end
     
-    # 48. TLN (Set by Default) (Field Length 40)
+    # 49. TLN (Set by Default) (Field Length 40)
     if (@tln.nil? || @tln.empty?)
       @warns[:tln] = "No Teacher Last Name"
 	else
 	  @tln.slice(0, 40)
     end
     
-    # 49. TFN (Set by Default) (Field Length 25)
+    # 50. TFN (Set by Default) (Field Length 25)
     if (@tfn.nil? || @tfn.empty?)
       @warns[:tfn] = "No Teacher First Name"
 	else
@@ -383,7 +390,7 @@ class StateStudent
 
     end
     
-    # 50. End of Record (Set by Default) (Field Length 1)
+    # 51. End of Record (Set by Default) (Field Length 1)
   end
 
   def valid?
