@@ -593,6 +593,7 @@ begin
      self.d_code = d_code
      self.term_grad = term_grad
      self.proj_grad = proj_grad
+	 self.slife = row['SLIFE']	 
      self.vtln = row['SIF_STATEPRID']
 	 self.tln = row['TCH_LAST_NAME']
 	 self.tfn = row['TCH_FIRST_NAME']
@@ -633,6 +634,7 @@ begin
      self.retest = retest
      self.term_grad = term_grad
      self.proj_grad = proj_grad
+	 self.slife = row['SLIFE']	 
      self.vtln = row['SIF_STATEPRID']
 	 self.tln = row['TCH_LAST_NAME']
 	 self.tfn = row['TCH_FIRST_NAME']
