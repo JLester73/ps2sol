@@ -6,12 +6,13 @@
 class SGAStudent
   attr_accessor :admin, :last_name, :first_name, :middle_name, :sti, :division,
     :va_schoolid, :test_code, :group_name, :group_code, :birth_date, :grade,
-    :gender, :ethnicity, :race, :mil_conn, :student_number, :primnight_rescode, 
+    :gender, :ethnicity, :race, :mil_conn, :mop_flag, :mop_resdiv,
+	:student_number, :primnight_rescode, 
     :foster, :n_code, :ell_comp_score, 
     :dis_code, :temp_cond, :formerly_lep, :x_code_b, :x_code_c, :x_code_d, 
     :soa_lep, :soa_trans, :recent_el, 
-    :local, :local_test, :online, :session_name, :recovery, :retest, :d_code,
-    :term_grad, :proj_grad, :par_req, :z_e, :z_f, :z_g, :vtln, :tln, 
+    :local, :local_test, :online, :session_name, :recovery, :retest, :slife,
+    :filler, :z_e, :z_f, :z_g, :vtln, :tln, 
     :tfn, :eor
 
   attr_reader :errors, :warns
@@ -38,8 +39,9 @@ class SGAStudent
     @sti = nil
     @ethnicity = nil
     @race = nil
-    @mil_conn = nil 
-	@filler = nil	
+    @mil_conn = nil
+	@mop_flag = nil
+	@mop_resdiv = nil
     @student_number = nil
     @primnight_rescode = nil
     @foster = nil
@@ -51,10 +53,20 @@ class SGAStudent
     @xcode_b = nil
     @xcode_c = nil
     @xcode_d = nil
+    @soa_lep = nil
+    @soa_trans = nil
+    @recent_el = nil
     @local = nil
     @local_test = nil
     @online
+	@slife = nil	
 	@session_name = nil
+    @recovery = nil
+    @retest = nil
+	@filler = nil
+    @term_grad = nil
+    @proj_grad = nil
+    @par_req = nil
     @z_e = nil
 	@z_f = nil
     @z_g = nil	
@@ -74,12 +86,12 @@ class SGAStudent
         csv << [@admin, @last_name, @first_name, @middle_name, @login,
         @division, @va_schoolid, @test_code, @group_name, @group_code,
         @birth_date, @grade, @gender, @sti, @ethnicity, @race, @mil_conn,
-		@filler,@filler,
+		@mop_flag, @mop_resdiv, @filler,
         @student_number, @primnight_rescode, @foster, @n_code,
         @ell_comp_score, @dis_code, @temp_cond,
-        @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @filler, @filler,
-        @filler, @local, @local_test, 
-        @online, @session_name, @filler, @filler, @filler, 
+        @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @soa_lep, @soa_trans,
+        @recent_el, @local, @local_test, 
+        @online, @session_name, @recovery, @retest, @slife, 
         @filler, @filler, @filler, @z_e, @z_f, @z_g, @vtln, 
         @tln, @tfn, @eor]
       end
@@ -228,11 +240,20 @@ class SGAStudent
     if (@mil_conn.nil? || @mil_conn < 1 || @mil_conn > 4)
       @errors[:mil_conn] = "Invalid Military Code"
     end
-      
-    # 18. Filler - Set by Default
-    # 19. Filler - Set by Default	
 
-    # 20. Student Number (Field Length 12)
+    # 18. MOP Flag
+	@mop_flag = @mop_flag.to_i
+	if (@mop_flag == 1 || @mop_flag == 2)
+	  @mop_flag = "Y"
+	else
+	  @mop_flag = "N"
+	end
+	
+    # 19. MOP Resident Division (Set by Default)
+	
+	# 20. Virtual Virginia (Set by Default)
+      
+    # 21. Student Number (Field Length 12)
     if (@student_number.nil? || @student_number.zero?)
       @warns[:student_number] = 'No Student Number'
     else
@@ -241,30 +262,31 @@ class SGAStudent
       # Field can be no longer than 12 characters
       @student_number = @student_number.to_s.slice(0,12)
     end
-	
-    # 21. Student Category - Homeless (Field Length 1)
+
+    # 22. Student Category - Homeless (Field Length 1)
       if (!@primnight_rescode.nil?)
         if (!@primnight_rescode.to_i.between?(1,4))  
           @errors[:primnight_rescode] = "Invalid PrimNight ResCode"
         end
       end
 
-    # 22. Foster Care
-    if (!@foster.nil?)
-      @foster = "Y"
+    # 23. Foster Care
+    if (@foster == '1')
+      @foster = 'Y'
+    else
+      @foster = ''
     end
 
-    # 23. N-Code (Free / Reduced) (Field Length 1)
+    # 24. N-Code (Free / Reduced) (Field Length 1)
     if ((@n_code == '1') || (!@primnight_rescode.nil? && !@primnight_rescode.empty?))
       @n_code = 'Y'
     else
       @n_code = ''
     end
 
+    # 25. ELL Composite Score (Field Length 2) Range 10-60
 
-    # 24. ELL Composite Score (Field Length 2) Range 10-60
-
-    # 25.Disability Code (Field Length 2)
+    # 26. Disability Code (Field Length 2)
     if (!@dis_code.nil? && !@dis_code.empty?)
       # Pad with leading zero if necessary
       @dis_code = @dis_code.to_s.rjust(2, '0')
@@ -273,9 +295,9 @@ class SGAStudent
       end
     end
 
-    # 26. Temporary Condition (Set by Default) (Field Length 1)
+    # 27. Temporary Condition (Set by Default) (Field Length 1)
     
-    # 27. Formerly LEP  (Field Length 1)
+    # 28. Formerly LEP  (Field Length 1)
     if (@formerly_lep.to_s == '4')
 	  if (!@ell_comp_score.nil?)
 	    @errors[:formerly_lep] = "Can't have Formerly EL of 4 with ELL Score"\
@@ -285,55 +307,77 @@ class SGAStudent
       @formerly_lep = nil
     end
     
-    # 28. X Code B (Set by Default) (Field Length 1)
+    # 29. X Code B (Set by Default) (Field Length 1)
 
-    # 29. X Code C (Set by Default) (Field Length 1)
+    # 30. X Code C (Set by Default) (Field Length 1)
    
-    # 30. X Code D (Set by Default) (Field Length 1)
-	
-    # 31. Filler - Set by Default
-    # 32. Filler - Set by Default	
-	# 33. Filler - Set by Default
+    # 31. X Code D (Set by Default) (Field Length 1)
  
-    # 34. Local Use (Set by Default) (Field Length 9)
+    # 32. SOA Adjustment LEP (Set by Default) (Field Length 1)
+    if (!@soa_lep.nil? && !@soa_lep.empty? && @soa_lep == 1)
+         @soa_lep = 'Y'
+    end
     
-    # 35. Local Use Test (Set by Default) Field Length 1)
+    # 33. SOA Adjustment Transfer (Field Length 1)
+    if (!@soa_trans.nil? && !@soa_trans.empty? && @soa_trans == 1)
+         @soa_trans = 'Y'
+    end
+    
+    # 34. Recently Arrived EL (Field Length 1)
+    
+    # 35. Local Use (Set by Default) (Field Length 9)
+    
+    # 36. Local Use Test (Set by Default) Field Length 1)
 
-    # 36. Online Testing (Field Length 1)
+    # 37. Online Testing (Field Length 1)
     if (@online.nil?)
       @online = nil 
     else
       @online = 'Y'
     end
     
-    # 37. Session Name  (Set by Default) (Field Length 50)
+    # 38. Session Name  (Set by Default) (Field Length 50)
 	
-    # 38. Filter (Set by Default)
-    # 39. Filter (Set by Default)
-    # 40. Filter (Set by Default)
-    # 41. Filter (Set by Default)
-    # 42. Filter (Set by Default)
-    # 43. Filter (Set by Default)	
-	
-    # 44. Z Code E (Set by Default) (Field Length 1)
-	
-    # 45. Z Code F (Set by Default) (Field Length 1)
+    # 39. Recovery (Set by Default) (Field Length 1)
+    if(!@recovery.nil?)
+      @recovery = 'Y'
+    end
 
-    # 46. Z Code G (Set by Default) (Field Length 1)
+    # 40. Retest (Field Length 1)
+    if (!@retest.nil?)
+      @retest = 'Y'
+    end
+    
+    # 41. SLIFE (Field Length 1)
+    if (@slife != 'Y')
+      @slife = ''
+    end	
 
-    # 47. VTLN (Set by Default) (Field Length 1)
+    # 42. Filler (Set by Default) (Field Length 1)
+    
+    # 43. Filler (Set by Default) (Field Length 1)
+
+    # 44. Filler (Set by Default) (Field Length 1)
+
+    # 45. Z Code E (Set by Default) (Field Length 1)
+	
+    # 46. Z Code F (Set by Default) (Field Length 1)
+
+    # 47. Z Code G (Set by Default) (Field Length 1)
+
+    # 48. VTLN (Set by Default) (Field Length 1)
     if (@vtln.nil? || @vtln.empty?)
       @warns[:vtln] = "No VTLN Associated"
     end
     
-    # 48. TLN (Set by Default) (Field Length 40)
+    # 49. TLN (Set by Default) (Field Length 40)
     if (@tln.nil? || @tln.empty?)
       @warns[:tln] = "No Teacher Last Name"
 	else
 	  @tln.slice(0, 40)
     end
     
-    # 49. TFN (Set by Default) (Field Length 25)
+    # 50. TFN (Set by Default) (Field Length 25)
     if (@tfn.nil? || @tfn.empty?)
       @warns[:tfn] = "No Teacher First Name"
 	else
@@ -341,7 +385,7 @@ class SGAStudent
 
     end
     
-    # 50. End of Record (Set by Default) (Field Length 1)
+    # 51. End of Record (Set by Default) (Field Length 1)
   end
 
   def valid?
