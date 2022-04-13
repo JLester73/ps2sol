@@ -250,6 +250,9 @@ class StateStudent
 	end
 	
     # 19. MOP Resident Division (Set by Default)
+	if (@mop_flag == "N")
+	  @mop_resdiv = nil
+	end
 	
 	# 20. Virtual Virginia (Set by Default)
       
@@ -348,8 +351,6 @@ class StateStudent
       @retest = 'Y'
     end
     
-    # 40. D Code (Set by Default) (Field Length 1)
-
     # 41. SLIFE (Field Length 1)
     if (@slife != 'Y')
       @slife = ''

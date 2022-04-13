@@ -1,6 +1,6 @@
 #
 # This file runs all the tests and writes out the CSV
-# file in the format needed for SGA testing uploads.
+# file in the format needed for main SOL testing uploads.
 #
 
 class SGAStudent
@@ -12,7 +12,7 @@ class SGAStudent
     :dis_code, :temp_cond, :formerly_lep, :x_code_b, :x_code_c, :x_code_d, 
     :soa_lep, :soa_trans, :recent_el, 
     :local, :local_test, :online, :session_name, :recovery, :retest, :slife,
-    :filler, :z_e, :z_f, :z_g, :vtln, :tln, 
+    :term_grad, :proj_grad, :par_req, :z_e, :z_f, :z_g, :vtln, :tln, 
     :tfn, :eor
 
   attr_reader :errors, :warns
@@ -250,6 +250,9 @@ class SGAStudent
 	end
 	
     # 19. MOP Resident Division (Set by Default)
+	if (@mop_flag == "N")
+	  @mop_resdiv = nil
+	end
 	
 	# 20. Virtual Virginia (Set by Default)
       
@@ -274,7 +277,7 @@ class SGAStudent
     if (@foster == '1')
       @foster = 'Y'
     else
-      @foster = ''
+      @foster = nil
     end
 
     # 24. N-Code (Free / Reduced) (Field Length 1)
@@ -356,8 +359,8 @@ class SGAStudent
     # 42. Filler (Set by Default) (Field Length 1)
     
     # 43. Filler (Set by Default) (Field Length 1)
-
-    # 44. Filler (Set by Default) (Field Length 1)
+    
+    # 44.  Filler (Set by Default) (Field Length 1)
 
     # 45. Z Code E (Set by Default) (Field Length 1)
 	
