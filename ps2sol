@@ -576,6 +576,8 @@ begin
      self.race = row['VA_ERCODE']
      self.student_number = row['STUDENT_NUMBER']
      self.mil_conn = row['VA_MIL_CONN']
+     self.mop_flag = row['VA_MOP_FLAG']	 
+     self.mop_resdiv = row['VA_MOP_RESDIV']	 	 
      self.foster = row['VA_FOSTER']
      self.primnight_rescode = row['VA_PRIMNIGHT_RESCODE']
      self.n_code = row['VA_DISADVANTAGED']
@@ -583,16 +585,11 @@ begin
      self.dis_code = row['VA_PRIMARY_DIS_CODE']
      self.soa_lep = row['SOL_SOA_LEP']
      self.soa_trans = row['SOL_SOA_TRANSFER']
-     self.d_code = row['SOL_D_CODE']
-     self.term_grad = row['SOL_TERM_GRAD']
      self.formerly_lep = row['VA_FORMERLY_EL']
      self.online = online
 	 self.session_name = session_name
      self.recovery = recovery
      self.retest = retest
-     self.d_code = d_code
-     self.term_grad = term_grad
-     self.proj_grad = proj_grad
 	 self.slife = row['SLIFE']	 
      self.vtln = row['SIF_STATEPRID']
 	 self.tln = row['TCH_LAST_NAME']
