@@ -89,10 +89,10 @@ class SGAStudent
 		@mop_flag, @mop_resdiv, @filler,
         @student_number, @primnight_rescode, @foster, @n_code,
         @ell_comp_score, @dis_code, @temp_cond,
-        @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @soa_lep, @soa_trans,
-        @recent_el, @local, @local_test, 
-        @online, @session_name, @recovery, @retest, @slife, 
-        @filler, @filler, @filler, @z_e, @z_f, @z_g, @vtln, 
+        @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @filler, @filler,
+        @filler, @local, @local_test, 
+        @online, @session_name, @filler, @filler, @slife, 
+        @z_e, @z_f, @z_g, @vtln, 
         @tln, @tfn, @eor]
       end
       return(valid)
@@ -316,17 +316,11 @@ class SGAStudent
    
     # 31. X Code D (Set by Default) (Field Length 1)
  
-    # 32. SOA Adjustment LEP (Set by Default) (Field Length 1)
-    if (!@soa_lep.nil? && !@soa_lep.empty? && @soa_lep == 1)
-         @soa_lep = 'Y'
-    end
+    # 32. Filler (Set by Default)
     
-    # 33. SOA Adjustment Transfer (Field Length 1)
-    if (!@soa_trans.nil? && !@soa_trans.empty? && @soa_trans == 1)
-         @soa_trans = 'Y'
-    end
+    # 33. Filler (Set by Default)
     
-    # 34. Recently Arrived EL (Field Length 1)
+    # 34. Filler (Set by Default)
     
     # 35. Local Use (Set by Default) (Field Length 9)
     
@@ -341,46 +335,34 @@ class SGAStudent
     
     # 38. Session Name  (Set by Default) (Field Length 50)
 	
-    # 39. Recovery (Set by Default) (Field Length 1)
-    if(!@recovery.nil?)
-      @recovery = 'Y'
-    end
+    # 39. Filler (Set by Default)
 
-    # 40. Retest (Field Length 1)
-    if (!@retest.nil?)
-      @retest = 'Y'
-    end
+    # 40. Filler (Set by Default)
     
     # 41. SLIFE (Field Length 1)
     if (@slife != 'Y')
       @slife = ''
     end	
 
-    # 42. Filler (Set by Default) (Field Length 1)
-    
-    # 43. Filler (Set by Default) (Field Length 1)
-    
-    # 44.  Filler (Set by Default) (Field Length 1)
-
-    # 45. Z Code E (Set by Default) (Field Length 1)
+    # 42. Z Code E (Set by Default) (Field Length 1)
 	
-    # 46. Z Code F (Set by Default) (Field Length 1)
+    # 43. Z Code F (Set by Default) (Field Length 1)
 
-    # 47. Z Code G (Set by Default) (Field Length 1)
+    # 44. Z Code G (Set by Default) (Field Length 1)
 
-    # 48. VTLN (Set by Default) (Field Length 1)
+    # 45. VTLN (Set by Default) (Field Length 1)
     if (@vtln.nil? || @vtln.empty?)
       @warns[:vtln] = "No VTLN Associated"
     end
     
-    # 49. TLN (Set by Default) (Field Length 40)
+    # 46. TLN (Set by Default) (Field Length 40)
     if (@tln.nil? || @tln.empty?)
       @warns[:tln] = "No Teacher Last Name"
 	else
 	  @tln.slice(0, 40)
     end
     
-    # 50. TFN (Set by Default) (Field Length 25)
+    # 47. TFN (Set by Default) (Field Length 25)
     if (@tfn.nil? || @tfn.empty?)
       @warns[:tfn] = "No Teacher First Name"
 	else
@@ -388,7 +370,7 @@ class SGAStudent
 
     end
     
-    # 51. End of Record (Set by Default) (Field Length 1)
+    # 48. End of Record (Set by Default) (Field Length 1)
   end
 
   def valid?

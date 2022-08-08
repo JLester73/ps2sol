@@ -1,8 +1,8 @@
 require 'rake/packagetask'
 require 'rake/clean'
 
-ADMIN = 'nwsprg22'
-SCHOOLS = %w{ 1080 40 1110 1090 260 1070 20 50 1020 620 70 1030 1060 1040 1050 8000}
+ADMIN = 'sgfall22'
+SCHOOLS = %w{ 1080 260 1070 20 50 1020 70 40 1110 1090 620 8000}
 TRACK = ''
 
 STUDENT_SRC = SCHOOLS.collect {|s| s + "-students.csv"}
