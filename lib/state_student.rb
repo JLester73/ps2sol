@@ -13,7 +13,7 @@ class StateStudent
     :soa_lep, :soa_trans, :recent_el, 
     :local, :local_test, :online, :session_name, :recovery, :retest, :slife,
     :term_grad, :proj_grad, :par_req, :z_e, :z_f, :z_g, :vtln, :tln, 
-    :tfn, :eor
+    :tfn, :pnp, :eor
 
   attr_reader :errors, :warns
 
@@ -73,6 +73,7 @@ class StateStudent
     @vtln = nil
     @tln = nil
     @tfn = nil
+	@pnp = nil
     @eor = 'Y'
 
     instance_eval &block if block_given?
@@ -93,7 +94,7 @@ class StateStudent
         @recent_el, @local, @local_test, 
         @online, @session_name, @recovery, @retest, @slife, 
         @term_grad, @proj_grad, @par_req, @z_e, @z_f, @z_g, @vtln, 
-        @tln, @tfn, @eor]
+        @tln, @tfn, @pnp, @eor]
       end
       return(valid)
     end
@@ -205,7 +206,7 @@ class StateStudent
     if (@gender.nil? || @gender.empty?)
       @errors[:gender] = "No Gender"
     else
-      @errors[:gender] = "Invalid Gender" if !@gender.match(/^[MF]$/)
+      @errors[:gender] = "Invalid Gender" if !@gender.match(/^[MFN]$/)
     end
 
     # 14. Student Testing Identifier (Field Length 10)
@@ -390,8 +391,10 @@ class StateStudent
 	  @tfn.slice(0, 25)
 
     end
+
+    # 51. PNP Calculator (Set by Default) (Field Length 1)
     
-    # 51. End of Record (Set by Default) (Field Length 1)
+    # 52. End of Record (Set by Default) (Field Length 1)
   end
 
   def valid?
