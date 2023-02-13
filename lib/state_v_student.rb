@@ -84,7 +84,7 @@ class StateVStudent
         @local, @local_test, @filler, @filler, @recovery,
 		@filler, @slife, @filler, @filler, @filler,
         @z_e, @z_f, @z_g, @vtln, 
-        @tln, @tfn, @eor]
+        @tln, @tfn, @filler, @eor]
       end
       return(valid)
     end
@@ -278,13 +278,11 @@ class StateVStudent
     # 25. ELL Composite Score (Field Length 2) Range 10-60
 
     # 26.Disability Code (Field Length 2)
-    if (!@dis_code.nil? && !@dis_code.empty?)
-      # Pad with leading zero if necessary
-      @dis_code = @dis_code.to_s.rjust(2, '0')
-      if !@dis_code.match(/(^0[1-9]|1[0234569])$/)
-        @errors[:dis_code] = "Invalid Disability Code"
-      end
+    @dis_code = @dis_code.to_s.rjust(2, '0')
+    if !@dis_code.match(/(^0[1-9]|1[0234569])$/)
+      @errors[:dis_code] = "Invalid Disability Code"
     end
+
 
     # 27. Filler (Set by Default)
     
@@ -320,9 +318,9 @@ class StateVStudent
     
     # 36. Local Use Test (Set by Default) Field Length 1)
 
-    # 37. Filler (Set by Default)
+    # 37. Online Testing (Set by Default)
     
-    # 38. Filler (Set by Default)
+    # 38. Session Name (Set by Default)
 	
     # 39. Recovery (Set by Default) (Field Length 1)
     if(!@recovery.nil?)
@@ -367,8 +365,9 @@ class StateVStudent
 	  @tfn.slice(0, 25)
 
     end
-    
-    # 51. End of Record (Set by Default) (Field Length 1)
+    # 51. Filler (Set by Default)
+	
+    # 52. End of Record (Set by Default) (Field Length 1)
   end
   
 
