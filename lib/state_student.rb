@@ -172,7 +172,7 @@ class StateStudent
       @group_code = @group_code.slice(0,10)
     end
 
-    # 11. Date if Birth (Field Length 8)
+    # 11. Date of Birth (Field Length 8)
     if (@birth_date.nil? || @birth_date.empty?)
       @errors[:birth_date] = "No Birthdate"
     else

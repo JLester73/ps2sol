@@ -81,7 +81,7 @@ class StateVStudent
 		@student_number, @primnight_rescode, @foster, @n_code,
         @ell_comp_score, @dis_code, @filler,
         @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @soa_lep, @soa_trans, @recent_el, 
-        @local, @local_test, @filler, @filler, @recovery,
+        @local, @local_test, @filler, @filler, @session_name, @recovery,
 		@filler, @slife, @filler, @filler, @filler,
         @z_e, @z_f, @z_g, @vtln, 
         @tln, @tfn, @filler, @eor]
@@ -321,6 +321,7 @@ class StateVStudent
     # 37. Online Testing (Set by Default)
     
     # 38. Session Name (Set by Default)
+	@session_name = @group_name
 	
     # 39. Recovery (Set by Default) (Field Length 1)
     if(!@recovery.nil?)
