@@ -526,6 +526,7 @@ begin
      self.soa_lep = row['SOL_SOA_LEP']
      self.soa_trans = row['SOL_SOA_TRANSFER']
      self.formerly_lep = row['VA_FORMERLY_EL']
+	 self.session_name = session_name	 
      self.recovery = recovery
 	 self.slife = row['SLIFE']
      self.vtln = row['SIF_STATEPRID']
