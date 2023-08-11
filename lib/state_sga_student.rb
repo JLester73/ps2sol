@@ -1,6 +1,6 @@
 #
 # This file runs all the tests and writes out the CSV
-# file in the format needed for main SOL testing uploads.
+# file in the format needed for main SOL Student Growth testing uploads.
 #
 
 class SGAStudent
@@ -73,6 +73,7 @@ class SGAStudent
     @vtln = nil
     @tln = nil
     @tfn = nil
+	@pnp = nil
     @eor = 'Y'
 
     instance_eval &block if block_given?
@@ -92,8 +93,8 @@ class SGAStudent
         @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @filler, @filler,
         @filler, @local, @local_test, 
         @online, @session_name, @filler, @filler, @slife, 
-        @z_e, @z_f, @z_g, @vtln, 
-        @tln, @tfn, @eor]
+        @filler, @filler, @filler, @z_e, @z_f, @z_g, @vtln, 
+        @tln, @tfn, @pnp, @eor]
       end
       return(valid)
     end
@@ -343,34 +344,41 @@ class SGAStudent
     if (@slife != 'Y')
       @slife = ''
     end	
-
-    # 42. Z Code E (Set by Default) (Field Length 1)
+    # 42. Filler (Set by Default)
 	
-    # 43. Z Code F (Set by Default) (Field Length 1)
+    # 43. Filler (Set by Default)
+	
+    # 44. Filler (Set by Default)	
+	
+    # 45. Z Code E (Set by Default) (Field Length 1)
+	
+    # 46. Z Code F (Set by Default) (Field Length 1)
 
-    # 44. Z Code G (Set by Default) (Field Length 1)
+    # 47. Z Code G (Set by Default) (Field Length 1)
 
-    # 45. VTLN (Set by Default) (Field Length 1)
+    # 48. VTLN (Set by Default) (Field Length 1)
     if (@vtln.nil? || @vtln.empty?)
       @warns[:vtln] = "No VTLN Associated"
     end
     
-    # 46. TLN (Set by Default) (Field Length 40)
+    # 49. TLN (Set by Default) (Field Length 40)
     if (@tln.nil? || @tln.empty?)
       @warns[:tln] = "No Teacher Last Name"
 	else
 	  @tln.slice(0, 40)
     end
     
-    # 47. TFN (Set by Default) (Field Length 25)
+    # 50. TFN (Set by Default) (Field Length 25)
     if (@tfn.nil? || @tfn.empty?)
       @warns[:tfn] = "No Teacher First Name"
 	else
 	  @tfn.slice(0, 25)
 
     end
-    
-    # 48. End of Record (Set by Default) (Field Length 1)
+	
+    # 51. PNP Calculator (Set by Default)    
+	
+    # 52. End of Record (Set by Default) (Field Length 1)
   end
 
   def valid?
