@@ -206,7 +206,7 @@ class StateStudent
     if (@gender.nil? || @gender.empty?)
       @errors[:gender] = "No Gender"
     else
-      @errors[:gender] = "Invalid Gender" if !@gender.match(/^[MFN]$/)
+      @errors[:gender] = "Invalid Gender" if !@gender.match(/^[MFNA]$/)
     end
 
     # 14. Student Testing Identifier (Field Length 10)
