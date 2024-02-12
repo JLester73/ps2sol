@@ -1,3 +1,16 @@
+2/12/2024
+Very minor update, added blank field for PNP Web Extension
+
+Note that PNP Calculator and PNP Web Extension will need to be
+set manually before upload if needed.
+
+Also, there are new test codes for the quad 8 schools (8888).
+
+Finally, we've found it is best to pull the output into Excel
+to make needed changes for the SGA tests.  It looks like the new
+IRW tests might also need that to prevent session/group name
+collisions with the other tests.
+
 Spring and Fall 2022
 Very minor changes to match SRI changes.  See Git history
 for specifics.

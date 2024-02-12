@@ -13,7 +13,7 @@ class StateStudent
     :soa_lep, :soa_trans, :recent_el, 
     :local, :local_test, :online, :session_name, :recovery, :retest, :slife,
     :term_grad, :proj_grad, :par_req, :z_e, :z_f, :z_g, :vtln, :tln, 
-    :tfn, :pnp, :eor
+    :tfn, :pnp, :pnpweb, :eor
 
   attr_reader :errors, :warns
 
@@ -74,6 +74,7 @@ class StateStudent
     @tln = nil
     @tfn = nil
 	@pnp = nil
+	@pnpweb = nil
     @eor = 'Y'
 
     instance_eval &block if block_given?
@@ -94,7 +95,7 @@ class StateStudent
         @recent_el, @local, @local_test, 
         @online, @session_name, @recovery, @retest, @slife, 
         @term_grad, @proj_grad, @par_req, @z_e, @z_f, @z_g, @vtln, 
-        @tln, @tfn, @pnp, @eor]
+        @tln, @tfn, @pnp, @pnpweb, @eor]
       end
       return(valid)
     end
@@ -393,8 +394,10 @@ class StateStudent
     end
 
     # 51. PNP Calculator (Set by Default) (Field Length 1)
+	
+	# 52. PNP Web Extension (Set by Default) (Field Length 1)
     
-    # 52. End of Record (Set by Default) (Field Length 1)
+    # 53. End of Record (Set by Default) (Field Length 1)
   end
 
   def valid?
