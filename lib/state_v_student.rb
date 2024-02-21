@@ -81,10 +81,10 @@ class StateVStudent
 		@student_number, @primnight_rescode, @foster, @n_code,
         @ell_comp_score, @dis_code, @filler,
         @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @soa_lep, @soa_trans, @recent_el, 
-        @local, @local_test, @filler, @filler, @session_name, @recovery,
+        @local, @local_test, @filler, @session_name, @recovery,
 		@filler, @slife, @filler, @filler, @filler,
         @z_e, @z_f, @z_g, @vtln, 
-        @tln, @tfn, @filler, @eor]
+        @tln, @tfn, @filler, @filler, @eor]
       end
       return(valid)
     end
@@ -368,7 +368,9 @@ class StateVStudent
     end
     # 51. Filler (Set by Default)
 	
-    # 52. End of Record (Set by Default) (Field Length 1)
+	# 52. Filler (Set by Default)
+	
+    # 53. End of Record (Set by Default) (Field Length 1)
   end
   
 
