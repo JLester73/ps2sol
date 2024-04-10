@@ -342,6 +342,7 @@ class StateStudent
     end
     
     # 38. Session Name  (Set by Default) (Field Length 50)
+	  @session_name = @session_name.gsub(/[^A-Za-z0-9 ]/, ' ')
 	
     # 39. Recovery (Set by Default) (Field Length 1)
     if(!@recovery.nil?)
@@ -383,6 +384,7 @@ class StateStudent
       @warns[:tln] = "No Teacher Last Name"
 	else
 	  @tln.slice(0, 40)
+	  @tln = @tln.gsub(/[^A-Za-z ]/, ' ')
     end
     
     # 50. TFN (Set by Default) (Field Length 25)
@@ -390,6 +392,7 @@ class StateStudent
       @warns[:tfn] = "No Teacher First Name"
 	else
 	  @tfn.slice(0, 25)
+	  @tfn = @tfn.gsub(/[^A-Za-z ]/, ' ')
 
     end
 
