@@ -95,7 +95,13 @@ class StateStudent
         @recent_el, @local, @local_test, 
         @online, @session_name, @recovery, @retest, @slife, 
         @term_grad, @proj_grad, @par_req, @z_e, @z_f, @z_g, @vtln, 
-        @tln, @tfn, @pnp, @pnpweb, @eor]
+        @tln, @tfn, @pnp, @pnpweb, 
+		@filler, @filler, @filler, @filler, @filler, @filler, 
+		@filler, @filler, @filler, @filler, @filler, @filler, 
+		@filler, @filler, @filler, @filler, @filler, @filler, @filler, 
+		@filler, @filler, @filler, @filler, @filler, @filler, @filler, 
+		@filler, @filler, @filler, @filler, @filler, @filler, @filler, 
+		@eor]
       end
       return(valid)
     end
@@ -399,8 +405,75 @@ class StateStudent
     # 51. PNP Calculator (Set by Default) (Field Length 1)
 	
 	# 52. PNP Web Extension (Set by Default) (Field Length 1)
+	
+	# 53. Non-Standard (Set by Default) (Field Length 1)
+	
+	# 54. Multiple Sessions (Set by Default) (Field Length 1)	
+	
+	# 55. Dry Erase Board (Set by Default) (Field Length 1)	
+	
+	# 56. Additional Writing Implements (Set by Default) (Field Length 1)	
+	
+	# 57. Visual Aids (Set by Default) (Field Length 1)	
+	
+	# 58. Auditory Aids (Set by Default) (Field Length 1)		
+	
+	# 59. Large-Print Tests (Set by Default) (Field Length 1)		
+	
+	# 60. Test Directions Delivery (Set by Default) (Field Length 1)		
+	
+	# 61. Enlarged Answers (Set by Default) (Field Length 1)			
+	
+	# 62. Braille Test (Set by Default) (Field Length 1)			
+	
+	# 63. Read-Aloud Test (Set by Default) (Field Length 1)			
+	
+	# 64. Audio Test (Set by Default) (Field Length 1)			
+	
+	# 65. Interpret the Test (Set by Default) (Field Length 1)			
+	
+	# 66. Comm Board (Set by Default) (Field Length 1)			
+	
+	# 67. Read-Aloud Reading Test (Set by Default) (Field Length 1)			
+	
+	# 68. Audio Reading Test (Set by Default) (Field Length 1)			
+	
+	# 69. Interpret the Reading Test (Set by Default) (Field Length 1)			
+	
+	# 70. Bilingual Dictionary (Set by Default) (Field Length 1)			
+	
+	# 71. Examiner Records Responses (Set by Default) (Field Length 1)				
+	
+	# 72. Math Aids (Set by Default) (Field Length 1)				
+	
+	# 73. Specific Verbal Prompts (Set by Default) (Field Length 1)				
+	
+	# 74. Response Devices (Set by Default) (Field Length 1)				
+	
+	# 75. Augmentative Comm (Set by Default) (Field Length 1)				
+	
+	# 76. Spelling Aids (Set by Default) (Field Length 1)				
+	
+	# 77. Dictation to Recorder (Set by Default) (Field Length 1)				
+	
+	# 78. Dictation to a Scribe (Set by Default) (Field Length 1)				
+	
+	# 79. Calc/Arith Tables (Set by Default) (Field Length 1)				
+	
+	# 80. VDOE Approved SAAR (Set by Default) (Field Length 1)				
+	
+	# 81. Calculator with Functions (Set by Default) (Field Length 1)					
+	
+	# 82. English Dictionary (Set by Default) (Field Length 1)					
+	
+	# 83. Read Back Student Response (Set by Default) (Field Length 1)					
+	
+	# 84. Flexible Schedule (Set by Default) (Field Length 1)					
+	
+	# 85. Setting (Set by Default) (Field Length 1)					
     
-    # 53. End of Record (Set by Default) (Field Length 1)
+    # 86. End of Record (Set by Default) (Field Length 1)
+	
   end
 
   def valid?
