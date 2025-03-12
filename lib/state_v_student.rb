@@ -84,7 +84,8 @@ class StateVStudent
         @local, @local_test, @filler, @session_name, @recovery,
 		@filler, @slife, @filler, @filler, @filler,
         @z_e, @z_f, @z_g, @vtln, 
-        @tln, @tfn, @filler, @filler, @eor]
+        @tln, @tfn, @filler, @filler, 
+		@filler, @filler, @filler, @filler, @eor]
       end
       return(valid)
     end
@@ -370,7 +371,15 @@ class StateVStudent
 	
 	# 52. Filler (Set by Default)
 	
-    # 53. End of Record (Set by Default) (Field Length 1)
+	# 53. Filler (Set by Default)
+	
+	# 54. Filler (Set by Default)
+	
+	# 55. Filler (Set by Default)
+	
+	# 56. Filler (Set by Default)
+	
+    # 57. End of Record (Set by Default) (Field Length 1)	
   end
   
 
