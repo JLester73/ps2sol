@@ -1,0 +1,83 @@
+#------------------------------------------------------------
+# ClassImportConverter configuration file
+# Important: The incoming CSV file is expected to be
+# sorted by field_1 and sub-sorted by field_2, field_3,
+# and field_4.  If the file is not ordered in this manner,
+# error messages will be placed in the logging file
+# (ClassImportConverter.log) and the resulting XML file may
+# not import correctly into Destiny.
+#------------------------------------------------------------
+
+#------------------------------------------------------------
+# Indicate whether the barcode (true) or DistrictID (false)
+# should be the identifier inserted into the output XML
+#------------------------------------------------------------
+useBarcodeAsTeacherId=false
+useBarcodeAsStudentId=false
+
+#------------------------------------------------------------
+# SiteID to Destiny short site name mapping -- Add entries
+# for each site to be mapped.
+# Example:  siteid_555=MySite
+#------------------------------------------------------------
+siteid_default=Undefined
+
+#------------------------------------------------------------
+# Department ID to department name mapping -- Add entries
+# for each department id to be mapped to a department name.
+# Example: dept_1=English
+#------------------------------------------------------------
+dept_default=
+
+
+
+
+#------------------------------------------------------------
+#------------------------------------------------------------
+# Setting from this point forward should only need to be
+# changed on an infrequent basis and only when the incoming
+# CSV data cannot be generated in the preferred input format.
+#------------------------------------------------------------
+#------------------------------------------------------------
+
+#------------------------------------------------------------
+#Default value for "meets" when one is not provided
+#------------------------------------------------------------
+meets_days_of_week_default=M,Tu,W,Th,F
+
+#------------------------------------------------------------
+# CSV fields to Destiny field mapping -- Associates XML fields
+# that Destiny uses with incoming CSV fields.  For special
+# processing (concatenated and formatted fields), please
+# refer to the configuration guide.
+#------------------------------------------------------------
+field_siteID={1}
+field_className={2}
+field_classDesignation={3}
+field_section={4}
+field_teacherNumber={5}
+field_period={6}
+field_studentNumber={7}
+field_department={8}
+field_meets=
+field_starts={9}
+field_ends={10}
+field_loanPeriodName=
+
+#------------------------------------------------------------
+# CSV input fields type mapping  -- Defines the type and
+# format of the incoming data in a given CSV field.  Please
+# refer to the configuration guide for valid values.
+#------------------------------------------------------------
+field_type_1=string
+field_type_2=string
+field_type_3=string
+field_type_4=string
+field_type_5=string
+field_type_6=string
+field_type_7=string
+field_type_8=string
+field_type_9=string
+field_type_10=string
+field_type_11=string
+field_type_12=string

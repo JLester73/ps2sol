@@ -1,0 +1,17 @@
+@echo off
+REM 2016-04-27 by Jason Lester
+REM Downloads output.csv from Linux server,
+REM sorts the file, converts it to classes.xml,
+REM and uploads it to Follett Destiny Resource Manager
+
+REM Download output.csv from Linux server
+c:
+cd "ImportConverterPath"
+C:\WinSCP Path\WinSCP.com /console /command "option batch abort" "option confirm off" "open user:password@servername" "cd /path/ps2destiny" "get output.csv" "exit"
+
+REM Sort output.csv and create classes.xml
+ClassImportConverter.exe output.csv sorted_output.csv /s
+ClassImportConverter.exe sorted_output.csv classes.xml classimport.properties
+
+REM Upload classes to Destiny Resource Manager
+updateclasses updateclasses.properties classes.xml instance_name -removeExistingSections=yes

@@ -1,0 +1,10 @@
+#!/bin/sh
+export RUBYOPT=rubygems
+
+# Create Sections file for Destiny 
+
+cd /home/data/ps2destiny
+rm sections.csv
+rm output.csv
+cat *.csv >sections.csv
+ruby sections.rb

@@ -1,3 +1,8 @@
+<<<<<<< HEAD
 *-students.csv
 *-students.log
 config/ps2sol.yaml
+=======
+properties/*.properties
+scripts/*.bat
+>>>>>>> ffbe5d42b21f45a56d5d496c7d3834d65bee0b6d

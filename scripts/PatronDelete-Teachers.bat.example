@@ -1,0 +1,3 @@
+copy \\pschool-server\ps-share\external\autosend\teacher_patrons.csv "c:\FilePath\ImportConverterFolder\"
+patronimportconverter.exe teacher_patrons.csv teachers-delete.xml map_teachers-delete.properties
+updatepatrons.exe updatepatrons.properties teachers-delete.xml instance_name
