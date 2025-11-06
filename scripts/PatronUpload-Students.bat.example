@@ -1,3 +1,0 @@
-copy \\pschool-server\ps-share\external\autosend\student_patrons.csv "c:\FilePath\ImportConverterFolder\"
-patronimportconverter.exe student_patrons.csv students.xml map_students.properties
-updatepatrons.exe updatepatrons.properties students.xml instance_name
