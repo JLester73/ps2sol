@@ -56,7 +56,7 @@ class StateVStudent
 	@recent_el = nil
     @local = nil
     @local_test = nil
-	@online
+	@online = "Y"
 	@slife = nil
     @z_e = nil
 	@z_f = nil
@@ -80,8 +80,8 @@ class StateVStudent
 		@mop_flag, @mop_resdiv, @filler,
 		@student_number, @primnight_rescode, @foster, @n_code,
         @ell_comp_score, @dis_code, @filler,
-        @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @soa_lep, @soa_trans, @recent_el, 
-        @local, @local_test, @filler, @session_name, @recovery,
+        @formerly_lep, @x_code_b, @x_code_c, @x_code_d, @filler, @filler, @recent_el, 
+        @local, @local_test, @online, @session_name, @recovery,
 		@filler, @slife, @filler, @filler, @filler,
         @z_e, @z_f, @z_g, @vtln, 
         @tln, @tfn, @filler, @filler, 
@@ -303,15 +303,9 @@ class StateVStudent
    
     # 31. X Code D (Set by Default) (Field Length 1)
  
-    # 32. SOA Adjustment LEP (Set by Default) (Field Length 1)
-    if (!@soa_lep.nil? && !@soa_lep.empty? && @soa_lep == 1)
-         @soa_lep = 'Y'
-    end
+    # 32. Filler (Set by Default)
     
-    # 33. SOA Adjustment Transfer (Field Length 1)
-    if (!@soa_trans.nil? && !@soa_trans.empty? && @soa_trans == 1)
-         @soa_trans = 'Y'
-    end
+    # 33. Filler (Set by Default)
     
     # 34. Recently Arrived EL (Field Length 1)
     
