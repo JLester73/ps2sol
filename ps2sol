@@ -426,8 +426,7 @@ begin
        "#{row['TCH_LAST_NAME'].slice(0, 4).strip} " +
        "#{row['EXPRESSION'].gsub(/[()]/, '').strip.slice(0,4)}"
 	 else
-       group = "#{gen_short_course(row['ALT_COURSE_NUMBER'])} " +
-       "#{row['TCH_LAST_NAME'].slice(0, 6).strip} " +
+       group = "#{row['TCH_LAST_NAME'].slice(0, 14).strip} " +
        "#{row['EXPRESSION'].gsub(/[()]/, '').strip.slice(0,4)}"
 	 end
     end
